@@ -10,6 +10,10 @@ type Database interface {
 	GetUserByID(id int) (models.User, error)
 	SaveUser(user models.User) error
 
+	CreateGraph(graph models.Graph) error
+	GetGraphByID(id int) (models.Graph, error)
+	SaveGraph(graph models.Graph) error
+
 	CreateNode(node models.Node) error
 	GetNodeByID(id int) (models.Node, error)
 	SaveNode(node models.Node) error

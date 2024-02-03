@@ -10,6 +10,7 @@ const (
 )
 
 type Edge struct {
+	width float32
 	color color.Color
 	shape EdgeShape
 }

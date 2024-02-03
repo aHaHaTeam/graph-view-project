@@ -12,6 +12,7 @@ const (
 )
 
 type Node struct {
+	size  float32
 	color color.Color
 	shape NodeShape
 }

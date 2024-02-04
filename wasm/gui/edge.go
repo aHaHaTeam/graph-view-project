@@ -1,6 +1,9 @@
 package gui
 
-import "image/color"
+import (
+	"graph-view-project/wasm/physics"
+	"image/color"
+)
 
 type EdgeShape int
 
@@ -15,7 +18,7 @@ type Edge struct {
 	shape EdgeShape
 }
 
-func (e *Edge) Draw() {
+func (e *Edge) Draw(begin, end physics.Vec2d) {
 	panic("not implemented exception")
 }
 

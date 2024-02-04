@@ -1,27 +1,28 @@
 package physics
 
-type Point struct {
+type Node struct {
 	isPinned     bool
 	mass         float32
 	position     Vec2d
 	velocity     Vec2d
 	acceleration Vec2d
 
-	segments []Segment
+	edgesIn  []*Edge
+	edgesOut []*Edge
 }
 
-func (p *Point) Update() {
+func (p *Node) Update() {
 	panic("not implemented exception")
 }
 
-func (p *Point) IsPinned() bool {
+func (p *Node) IsPinned() bool {
 	return p.isPinned
 }
 
-func (p *Point) Pin() {
+func (p *Node) Pin() {
 	p.isPinned = true
 }
 
-func (p *Point) UnPin() {
+func (p *Node) UnPin() {
 	p.isPinned = false
 }

@@ -9,7 +9,7 @@ import (
 
 type Node struct {
 	model models.Node
-	point physics.Point
+	point physics.Node
 	node  gui.Node
 }
 

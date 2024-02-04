@@ -9,7 +9,7 @@ import (
 
 type Edge struct {
 	model   models.Edge
-	segment physics.Segment
+	segment physics.Edge
 	edge    gui.Edge
 }
 

@@ -8,6 +8,9 @@
 *.so
 *.dylib
 
+#WebAssembly binary format
+*.wasm
+
 # Test binary, built with `go test -c`
 *.test
 

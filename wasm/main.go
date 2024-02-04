@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 
 	. "github.com/BuriedInTheGround/pigowa"
@@ -9,6 +10,14 @@ import (
 func main() {
 	done := make(chan struct{})
 	fmt.Println("Hello Gopher!")
+
+	connStr := "user=postgres password=mypass dbname=productdb sslmode=disable" //TODO setup db connection
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		panic(err)
+	}
+
+	_ = db
 
 	Setup(func() interface{} {
 		//canvasSize := js.Global().Get("document").Call("getElementById", "canvas").Call("getBoundingClientRect")

@@ -1,15 +1,16 @@
 package models
 
-import "database/sql"
+import (
+	"database/sql"
+	"graph-view-project/wasm/facades"
+)
 
 type Graph struct {
 	id          int
 	name        string
 	description string
-	nodes       []Node
-	edges       []Edge
 }
 
-func (graph *Graph) GetNodes(db *sql.DB) {
+func (graph *Graph) GetNodes(db *sql.DB, nodes *[]facades.Node, edges *[]facades.Edge) {
 	//TODO
 }

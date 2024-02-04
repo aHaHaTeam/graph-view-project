@@ -17,8 +17,12 @@ func (*Node) Draw() {
 	panic("not implemented exception")
 }
 
-func (*Node) Update() {
-	panic("not implemented exception")
+func (n *Node) Update(c chan struct{}) {
+	n.point.Update(c)
+}
+
+func (n *Node) Move(time float64) {
+	n.point.Move(time)
 }
 
 func (*Node) SetNodeName(name string) {

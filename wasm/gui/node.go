@@ -12,19 +12,23 @@ const (
 )
 
 type Node struct {
-	size  float32
 	color color.Color
 	shape NodeShape
+	size  float32
 }
 
-func (n *Node) Draw() {
+func (node *Node) Draw() {
 	panic("not implemented exception")
 }
 
-func (n *Node) SetColor(color color.Color) {
-	n.color = color
+func (node *Node) SetColor(color color.Color) {
+	node.color = color
 }
 
-func (n *Node) SetShape(shape NodeShape) {
-	n.shape = shape
+func (node *Node) SetShape(shape NodeShape) {
+	node.shape = shape
+}
+
+func (node *Node) SetSize(size float32) {
+	node.size = size
 }

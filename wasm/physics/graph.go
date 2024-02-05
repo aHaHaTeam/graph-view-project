@@ -1,27 +1,28 @@
 package physics
 
 import (
-	"graph-view-project/wasm/facades"
 	"time"
 )
 
 type Graph struct {
 	lastTime time.Time
-	//Some useful constants
+
+	centralForceCoefficient   float64
+	repulsiveForceCoefficient float64
 }
 
-func (g *Graph) Update(nodes *[]facades.Node) {
+func (graph *Graph) Update(nodes *[]Node) {
 	c := make(chan struct{})
 	for _, n := range *nodes {
-		go n.Update(c)
+		go n.Update(c, nodes, graph)
 	}
 
 	for range *nodes {
 		<-c
 	}
 
-	dt := time.Since(g.lastTime).Seconds()
-	g.lastTime = time.Now()
+	dt := time.Since(graph.lastTime).Seconds()
+	graph.lastTime = time.Now()
 	for _, n := range *nodes {
 		n.Move(dt)
 	}

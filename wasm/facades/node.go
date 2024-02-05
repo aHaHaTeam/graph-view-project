@@ -17,8 +17,8 @@ func (*Node) Draw() {
 	panic("not implemented exception")
 }
 
-func (node *Node) Update(c chan struct{}) {
-	node.point.Update(c)
+func (node *Node) Update(c chan struct{}, nodes *[]physics.Node, graph *physics.Graph) {
+	node.point.Update(c, nodes, graph)
 }
 
 func (node *Node) Move(time float64) {

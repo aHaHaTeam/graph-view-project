@@ -10,42 +10,43 @@ type Node struct {
 	edgesOut []*Edge
 }
 
-func (p *Node) Update(c chan struct{}) {
-	if p.isPinned {
+func (node *Node) Update(c chan struct{}, nodes *[]Node, graph *Graph) {
+	if node.isPinned {
+		node.velocity = Vec2d{0, 0}
 		return
 	}
 
-	resultantForce := Vec2d{0, 0}
+	resultantForce := centralForce(node, graph)
 
-	for _, e := range p.edgesIn {
-		v := e.begin.position.subtract(e.end.position)
-		dl := v.length() - e.length
-		resultantForce.add(v.multiply(e.k * dl))
+	for _, e := range node.edgesIn {
+		resultantForce.add(springForce(e.end, e.begin, e))
 	}
 
-	for _, e := range p.edgesIn {
-		v := e.end.position.subtract(e.begin.position)
-		dl := v.length() - e.length
-		resultantForce.add(v.multiply(e.k * dl))
+	for _, e := range node.edgesOut {
+		resultantForce.add(springForce(e.begin, e.end, e))
 	}
 
-	p.velocity.add(resultantForce.divide(p.mass))
+	for _, n := range *nodes {
+		resultantForce.add(repulsiveForce(node, n, graph))
+	}
+
+	node.velocity.add(resultantForce.divide(node.mass))
 
 	c <- struct{}{}
 }
 
-func (p *Node) Move(time float64) {
-	p.position.add(p.velocity.multiply(time))
+func (node *Node) Move(time float64) {
+	node.position.add(node.velocity.multiply(time))
 }
 
-func (p *Node) IsPinned() bool {
-	return p.isPinned
+func (node *Node) IsPinned() bool {
+	return node.isPinned
 }
 
-func (p *Node) Pin() {
-	p.isPinned = true
+func (node *Node) Pin() {
+	node.isPinned = true
 }
 
-func (p *Node) UnPin() {
-	p.isPinned = false
+func (node *Node) UnPin() {
+	node.isPinned = false
 }

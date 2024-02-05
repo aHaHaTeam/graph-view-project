@@ -18,14 +18,14 @@ type Edge struct {
 	shape EdgeShape
 }
 
-func (e *Edge) Draw(begin, end physics.Vec2d) {
+func (edge *Edge) Draw(begin, end physics.Vec2d) {
 	panic("not implemented exception")
 }
 
-func (e *Edge) SetColor(color color.Color) {
-	e.color = color
+func (edge *Edge) SetColor(color color.Color) {
+	edge.color = color
 }
 
-func (e *Edge) SetShape(shape EdgeShape) {
-	e.shape = shape
+func (edge *Edge) SetShape(shape EdgeShape) {
+	edge.shape = shape
 }

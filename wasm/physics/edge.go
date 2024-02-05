@@ -6,7 +6,7 @@ type Edge struct {
 	k          float64
 }
 
-func (e *Edge) GetLength() float64 {
-	vec := vectorFromTwoPoints(e.begin.position, e.end.position)
+func (edge *Edge) GetLength() float64 {
+	vec := vectorFromTwoPoints(edge.begin.position, edge.end.position)
 	return vec.length()
 }

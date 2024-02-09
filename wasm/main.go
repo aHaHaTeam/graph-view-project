@@ -11,7 +11,15 @@ func main() {
 	done := make(chan struct{})
 	fmt.Println("Hello Gopher!")
 
-	connStr := "user=postgres password=mypass dbname=productdb sslmode=disable" //TODO setup db connection
+	user := "postgres"
+	password := "password"
+	host := "database-1239.cpyasqckugo5.eu-north-1.rds.amazonaws.com"
+	port := "5432"
+	dbName := "pgadmindb"
+	template := "postgres://%s:%s@%s:%s/%s"
+
+	connStr := fmt.Sprintf(template, user, password, host, port, dbName)
+
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		panic(err)

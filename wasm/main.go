@@ -3,19 +3,26 @@ package main
 import (
 	"database/sql"
 	"fmt"
-
 	. "github.com/BuriedInTheGround/pigowa"
+	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
+	"log"
+	"os"
 )
 
 func main() {
 	done := make(chan struct{})
 	fmt.Println("Hello Gopher!")
 
-	user := "postgres"
-	password := "password"
-	host := "database-1239.cpyasqckugo5.eu-north-1.rds.amazonaws.com"
-	port := "5432"
-	dbName := "pgadmindb"
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
+
+	user := os.Getenv("DB1_USER")
+	password := os.Getenv("DB1_PASSWORD")
+	host := os.Getenv("DB1_HOST")
+	port := os.Getenv("DB1_PORT")
+	dbName := os.Getenv("DB1_DBNAME")
 	template := "postgres://%s:%s@%s:%s/%s"
 
 	connStr := fmt.Sprintf(template, user, password, host, port, dbName)

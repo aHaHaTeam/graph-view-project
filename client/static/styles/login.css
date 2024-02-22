@@ -1,0 +1,135 @@
+.container{
+    position: relative;
+    max-width: 430px;
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px 10px;
+}
+
+.container .form{
+    height: max-content;
+    width: 100%;
+    padding: 30px;
+    background-color: #fff;
+    align-items: center;
+}
+
+.container .form .title{
+    position: relative;
+    font-size: large;
+    font-weight: 600;
+}
+
+form{
+    width: 100%;
+}
+
+.form .title::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 30px;
+    background-color: #4070f4;
+    border-radius: 25px;
+}
+
+.input-field{
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.input-field input{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding: 0 40px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    border-bottom: 2px solid #ccc;
+    border-top: 2px solid transparent;
+}
+
+.input-field input:is(:focus, :valid){
+    border-bottom-color: #4070f4;
+}
+
+.input-field i{
+    position: absolute;
+    top: 15%;
+    color: #999;
+    font-size: 23px;
+    padding: 0 5px ;
+}
+
+.input-field input:is(:focus, :valid) ~ i{
+    color: #4070f4;
+}
+
+.input-field i.icon{
+    left: 0;
+}
+.input-field i.showHidePw{
+    right: 0;
+    cursor: pointer;
+    padding-right: 10px;
+}
+
+.checkbox-text{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.checkbox-content{
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    accent-color: #4070f4;
+}
+
+.checkbox-content input{
+    margin-right: 10px;
+    accent-color: #4070f4;
+}
+
+.text{
+    color: #333;
+    font-size: 14px;
+}
+
+a.text{
+    color: #4070f4;
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
+}
+
+button{
+    height: inherit;
+    width: 100%;
+    border: none;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    background-color: #4070f4;
+    cursor: pointer;
+}
+
+button:hover{
+    background-color: #265df2;
+}
+
+.login-signup{
+    margin-top: 5px;
+}

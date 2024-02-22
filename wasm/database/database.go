@@ -1,24 +1,31 @@
 package database
 
-import "graph-view-project/wasm/models"
+import (
+	"database/sql"
+	"fmt"
+	"github.com/joho/godotenv"
+	"log"
+	"os"
+)
 
-type Database interface {
-	Connect() error
-	Disconnect() error
+func Connect(databaseName string) (*sql.DB, error) {
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
 
-	CreateUser(user models.User) error
-	GetUserByID(id int) (models.User, error)
-	SaveUser(user models.User) error
+	user := os.Getenv("DB1_USER")
+	password := os.Getenv("DB1_PASSWORD")
+	host := os.Getenv("DB1_HOST")
+	port := os.Getenv("DB1_PORT")
+	dbName := os.Getenv(databaseName)
+	template := "postgres://%s:%s@%s:%s/%s"
 
-	CreateGraph(graph models.Graph) error
-	GetGraphByID(id int) (models.Graph, error)
-	SaveGraph(graph models.Graph) error
+	connStr := fmt.Sprintf(template, user, password, host, port, dbName)
 
-	CreateNode(node models.Node) error
-	GetNodeByID(id int) (models.Node, error)
-	SaveNode(node models.Node) error
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		return nil, err
+	}
 
-	CreateEdge(user models.User) error
-	GetEdgeByID(id int) (models.User, error)
-	SaveEdge(user models.User) error
+	return db, nil
 }

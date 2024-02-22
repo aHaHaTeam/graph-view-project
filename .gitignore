@@ -8,8 +8,11 @@
 *.so
 *.dylib
 
-#WebAssembly binary format
+# WebAssembly binary format
 *.wasm
+
+# Secret enviroment variables
+*.env
 
 # Test binary, built with `go test -c`
 *.test

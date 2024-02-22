@@ -1,24 +1,17 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
-
 	. "github.com/BuriedInTheGround/pigowa"
+	_ "github.com/joho/godotenv/autoload"
+	"graph-view-project/wasm/database"
 )
 
 func main() {
 	done := make(chan struct{})
 	fmt.Println("Hello Gopher!")
-
-	connStr := "user=postgres password=mypass dbname=productdb sslmode=disable" //TODO setup db connection
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		panic(err)
-	}
-
+	db, _ := database.Connect("graph-view-project")
 	_ = db
-
 	Setup(func() interface{} {
 		//canvasSize := js.Global().Get("document").Call("getElementById", "canvas").Call("getBoundingClientRect")
 		//CreateCanvas(canvasSize.Get("width").Int(), canvasSize.Get("height").Int())

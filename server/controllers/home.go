@@ -12,6 +12,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		//http.ServeFile(w, r, "../client/static/login.html")
 		log.Println(err)
 		return
 	}
@@ -20,6 +21,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		//http.ServeFile(w, r, "../client/static/login.html")
 		log.Println(err)
 		return
 	}

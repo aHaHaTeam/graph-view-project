@@ -18,15 +18,23 @@
 <div class="container">
     <div class="login form">
         <span class="title">Login</span>
+        <label id="errorLabel" class="text"></label>
         <form action="#" id="loginForm">
-            <div class="input-field">
-                <input type="text" placeholder="Enter your login" required id="userLogin">
-                <i class="uil uil-envelope icon"></i>
+            <div>
+                <div class="input-field">
+                    <input type="text" placeholder="Enter your login" id="userLogin" required>
+                    <i class="uil uil-envelope icon"></i>
+                </div>
+                <label for="userLogin"></label>
             </div>
-            <div class="input-field">
-                <input type="password" class="password" placeholder="Enter your password" required id="userPassword">
-                <i class="uil uil-lock icon"></i>
-                <i class="uil uil-eye-slash showHidePw"></i>
+            <div>
+                <div class="input-field">
+                    <input type="password" class="password" placeholder="Enter your password" id="userPassword"
+                           required>
+                    <i class="uil uil-lock icon"></i>
+                    <i class="uil uil-eye-slash showHidePw"></i>
+                </div>
+                <label for="userPassword" class="text" id="userPasswordLabel"></label>
             </div>
             <div class="checkbox-text">
                 <div class="checkbox-content">
@@ -51,22 +59,36 @@
     <div class="signup form" hidden="">
         <span class="title">Registration</span>
         <form action="#" id="signUpForm">
-            <div class="input-field">
-                <input type="text" placeholder="Enter your login" required id="loginCreation">
-                <i class="uil uil-user"></i>
+            <div>
+                <div class="input-field">
+                    <input type="text" placeholder="Enter your login" required id="loginCreation">
+                    <i class="uil uil-user"></i>
+                </div>
+                <label for="loginCreation" class="text" id="loginCreationLabel"></label>
             </div>
-            <div class="input-field">
-                <input type="text" placeholder="Enter your email" required id="emailCreation">
-                <i class="uil uil-envelope icon"></i>
+            <div>
+                <div class="input-field">
+                    <input type="text" placeholder="Enter your email" required id="emailCreation">
+                    <i class="uil uil-envelope icon"></i>
+                </div>
+                <label for="loginCreation" class="text" id="emailCreationLabel"></label>
             </div>
-            <div class="input-field">
-                <input type="password" class="password" placeholder="Create a password" required id="passwordCreation">
-                <i class="uil uil-lock icon"></i>
+            <div>
+                <div class="input-field">
+                    <input type="password" class="password" placeholder="Create a password" required
+                           id="passwordCreation">
+                    <i class="uil uil-lock icon"></i>
+                </div>
+                <label for="passwordCreation" class="text" id="passwordCreationLabel"></label>
             </div>
-            <div class="input-field">
-                <input type="password" class="password" placeholder="Confirm a password" required id="passwordConfirmation">
-                <i class="uil uil-lock icon"></i>
-                <i class="uil uil-eye-slash showHidePw"></i>
+            <div>
+                <div class="input-field">
+                    <input type="password" class="password" placeholder="Confirm a password" required
+                           id="passwordConfirmation">
+                    <i class="uil uil-lock icon"></i>
+                    <i class="uil uil-eye-slash showHidePw"></i>
+                </div>
+                <label for="passwordConfirmation" class="text" id="passwordConfirmationLabel"></label>
             </div>
             <button type="submit" class="input-field button">Signup</button>
         </form>
@@ -79,5 +101,7 @@
     </div>
 </div>
 <script src="scripts/login.js"></script>
+<script src="scripts/signup.js"></script>
+<script src="scripts/eye_icon.js"></script>
 </body>
 </html>

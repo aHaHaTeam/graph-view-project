@@ -3,6 +3,7 @@ package database
 import (
 	"errors"
 	"graph-view-project/server/models"
+	"graph-view-project/server/utils"
 )
 
 var DB DataBase
@@ -40,7 +41,9 @@ func (db *MockDB) CreateUser(login, email, password string) error {
 func (db *MockDB) Connect() error {
 	DB = db
 	db.users = make(map[string]models.User)
-	_ = DB.CreateUser("user", "user@user", "password")
-	_ = DB.CreateUser("123", "123", "123")
+	hash, _ := utils.GenerateHashPassword("password")
+	_ = DB.CreateUser("user", "user@user", hash)
+	hash, _ = utils.GenerateHashPassword("12345678password")
+	_ = DB.CreateUser("12345", "123456", hash)
 	return nil
 }

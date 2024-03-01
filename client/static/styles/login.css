@@ -54,6 +54,11 @@ form{
     font-size: 16px;
     border-bottom: 2px solid #ccc;
     border-top: 2px solid transparent;
+    background-color: transparent;
+}
+
+.input-field input:is(:focus, :invalid){
+    border-bottom-color: #f43040;
 }
 
 .input-field input:is(:focus, :valid){
@@ -132,4 +137,12 @@ button:hover{
 
 .login-signup{
     margin-top: 5px;
+}
+
+label{
+    font-size: 10px;
+}
+
+.error{
+    color: #f43040;
 }

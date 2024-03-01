@@ -15,9 +15,9 @@ func GenerateHashPassword(password string) (string, error) {
 	return string(bytes), err
 }
 
-func CompareHashPassword(password, hash string) bool {
+func CompareHashPassword(password, hash string) error {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
-	return err == nil
+	return err
 }
 
 func ParseToken(tokenString string) (claims *models.Claims, err error) {

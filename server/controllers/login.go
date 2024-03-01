@@ -17,7 +17,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 
 	if err := decoder.Decode(&user); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		w.Header().Add("success", "Invalid login or password")
+		//http.Error(w, err.Error(), http.StatusBadRequest)
 		log.Println(err)
 		return
 	}
@@ -26,16 +27,18 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	existingUser, err := database.DB.GetUserByLogin(user.Login)
 
 	if err != nil {
-		http.Error(w, "user does not exist", http.StatusBadRequest)
+		w.Header().Add("success", "Invalid login or password")
+		//http.Error(w, "user does not exist", http.StatusBadRequest)
 		log.Println(err)
 		return
 	}
 
-	ok := utils.CompareHashPassword(user.Password, existingUser.Password)
+	err = utils.CompareHashPassword(user.Password, existingUser.Password)
 
-	if ok {
-		http.Error(w, "invalid password", http.StatusBadRequest)
-		log.Println(ok)
+	if err != nil {
+		w.Header().Add("success", "Invalid login or password")
+		//http.Error(w, "invalid password", http.StatusBadRequest)
+		log.Println(err)
 		return
 	}
 
@@ -54,7 +57,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	tokenString, err := token.SignedString(utils.JWTKey)
 
 	if err != nil {
-		http.Error(w, "could not generate token", http.StatusInternalServerError)
+		w.Header().Add("success", "Invalid login or password")
+		//http.Error(w, "could not generate token", http.StatusInternalServerError)
 		log.Println(err)
 		return
 	}
@@ -71,5 +75,5 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		HttpOnly:   true,
 	})
 
-	w.Header().Add("success", "user logged in")
+	w.Header().Add("success", "User logged in")
 }

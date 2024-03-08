@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/login.css">
+
+    <title>Login & Registration Form</title>
+</head>
+<body>
+
+<div class="container">
+    <div class="login form">
+        <span class="title">Login</span>
+        <label id="errorLabel" class="text"></label>
+        <form action="#" id="loginForm">
+            <div>
+                <div class="input-field">
+                    <input type="text" placeholder="Enter your login" id="userLogin" required>
+                    <i class="uil uil-envelope icon"></i>
+                </div>
+                <label for="userLogin"></label>
+            </div>
+            <div>
+                <div class="input-field">
+                    <input type="password" class="password" placeholder="Enter your password" id="userPassword"
+                           required>
+                    <i class="uil uil-lock icon"></i>
+                    <i class="uil uil-eye-slash showHidePw"></i>
+                </div>
+                <label for="userPassword" class="text" id="userPasswordLabel"></label>
+            </div>
+            <div class="checkbox-text">
+                <div class="checkbox-content">
+                    <input type="checkbox" id="logCheck">
+                    <label for="logCheck" class="text">Remember me</label>
+                </div>
+                <a href="#" class="text">Forgot password?</a>
+            </div>
+
+            <div class="input-field">
+                <button type="submit" class="button">Login</button>
+            </div>
+            <div class="login-signup">
+            <span class="text">Not a member?
+                <a href="#" class="text signup-link">Signup Now</a>
+            </span>
+            </div>
+        </form>
+
+    </div>
+    <!-- Registration Form -->
+    <div class="signup form" hidden="">
+        <span class="title">Registration</span>
+        <form action="#" id="signUpForm">
+            <div>
+                <div class="input-field">
+                    <input type="text" placeholder="Enter your login" required id="loginCreation">
+                    <i class="uil uil-user"></i>
+                </div>
+                <label for="loginCreation" class="text" id="loginCreationLabel"></label>
+            </div>
+            <div>
+                <div class="input-field">
+                    <input type="text" placeholder="Enter your email" required id="emailCreation">
+                    <i class="uil uil-envelope icon"></i>
+                </div>
+                <label for="loginCreation" class="text" id="emailCreationLabel"></label>
+            </div>
+            <div>
+                <div class="input-field">
+                    <input type="password" class="password" placeholder="Create a password" required
+                           id="passwordCreation">
+                    <i class="uil uil-lock icon"></i>
+                </div>
+                <label for="passwordCreation" class="text" id="passwordCreationLabel"></label>
+            </div>
+            <div>
+                <div class="input-field">
+                    <input type="password" class="password" placeholder="Confirm a password" required
+                           id="passwordConfirmation">
+                    <i class="uil uil-lock icon"></i>
+                    <i class="uil uil-eye-slash showHidePw"></i>
+                </div>
+                <label for="passwordConfirmation" class="text" id="passwordConfirmationLabel"></label>
+            </div>
+            <button type="submit" class="input-field button">Signup</button>
+        </form>
+
+        <div class="login-signup">
+            <span class="text">Already a member?
+                <a href="#" class="text login-link">Login Now</a>
+            </span>
+        </div>
+    </div>
+</div>
+<script src="scripts/login.js"></script>
+<script src="scripts/signup.js"></script>
+<script src="scripts/eye_icon.js"></script>
+</body>
+</html>

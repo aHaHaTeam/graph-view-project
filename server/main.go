@@ -1,7 +1,7 @@
 package main
 
 import (
-	"graph-view-project/server/database"
+	"graph-view-project/database"
 	"graph-view-project/server/routes"
 	"graph-view-project/server/utils"
 	"log"

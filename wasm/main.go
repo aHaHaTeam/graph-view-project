@@ -1,13 +1,12 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
-	"log"
-
-	_ "github.com/lib/pq"
-	. "github.com/BuriedInTheGround/pigowa"
+	"graph-view-project/database"
+	//. "github.com/BuriedInTheGround/pigowa"
 	_ "github.com/joho/godotenv/autoload"
-	"graph-view-project/wasm/database"
+	_ "github.com/lib/pq"
 )
 
 type Product struct {
@@ -18,17 +17,25 @@ type Product struct {
 
 func main() {
 	done := make(chan struct{})
+	_ = done
 	fmt.Println("Hello Gopher!")
 	db, _ := database.Connect("graph-view-project")
 	_ = db
-	Setup(func() interface{} {
-		//canvasSize := js.Global().Get("document").Call("getElementById", "canvas").Call("getBoundingClientRect")
-		//CreateCanvas(canvasSize.Get("width").Int(), canvasSize.Get("height").Int())
-		CreateCanvas(WindowWidth(), WindowHeight())
-		return nil
-	})
+	/*
+		Setup(func() interface{} {
+			//canvasSize := js.Global().Get("document").Call("getElementById", "canvas").Call("getBoundingClientRect")
+			//CreateCanvas(canvasSize.Get("width").Int(), canvasSize.Get("height").Int())
+			CreateCanvas(WindowWidth(), WindowHeight())
+			return nil
+		})*/
 
 	doDraw := true
+	_ = doDraw
+
+	postgres, err := database.Connect("postgres")
+	fmt.Printf("succes")
+	CreateTable(postgres)
+	_ = err
 
 	product := Product{"Book", 15.55, true}
 	pk := InsertProduct(db, product)

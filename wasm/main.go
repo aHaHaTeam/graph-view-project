@@ -19,7 +19,11 @@ func main() {
 	done := make(chan struct{})
 	_ = done
 	fmt.Println("Hello Gopher!")
-	db, _ := database.Connect("graph-view-project")
+	db := database.PostgresDB{}
+	err := db.Connect("postgres")
+	if err != nil {
+		return
+	}
 	_ = db
 	/*
 		Setup(func() interface{} {
@@ -32,25 +36,22 @@ func main() {
 	doDraw := true
 	_ = doDraw
 
-	postgres, err := database.Connect("postgres")
 	fmt.Printf("succes")
-	CreateTable(postgres)
+	CreateTable(db.Connection)
 	_ = err
 
-	product := Product{"Book", 15.55, true}
-	pk := InsertProduct(db, product)
+	//product := Product{"Book", 15.55, true}
+	//pk := InsertProduct(db.Connection, product)
 
-	fmt.Println(pk)
+	//fmt.Println(pk)
 
 }
 
 func CreateTable(db *sql.DB) {
-	query := `CREATE TABLE IF NOT EXISTS product(
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    price NUMERIC(6,2) NOT NULL,
-    avaliable BOOLEAN,
-    created timestamp DEFAULT NOW()
+	query := `CREATE TABLE IF NOT EXISTS Users(
+    login    varchar(239),
+    email    varchar(239),
+    password varchar(239)
   )`
 
 	_, err := db.Exec(query)
@@ -67,7 +68,6 @@ func InsertProduct(db *sql.DB, product Product) int {
 		panic(err)
 	}
 	return pk
-
 }
 
 //package main

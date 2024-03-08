@@ -1,11 +1,9 @@
 package database
 
-import (
-	"graph-view-project/server/models"
-)
+import "graph-view-project/server/models"
 
 type DataBase interface {
 	GetUserByLogin(login string) (models.User, error)
 	CreateUser(login, email, password string) error
-	Connect() error
+	Connect(databaseName string) error
 }

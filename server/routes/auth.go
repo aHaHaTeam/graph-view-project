@@ -1,15 +1,16 @@
 package routes
 
 import (
+	"graph-view-project/database"
 	"graph-view-project/server/controllers"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
 
-func Routes(router *mux.Router) {
-	router.HandleFunc("/login", controllers.Login).Methods("POST")
-	router.HandleFunc("/signup", controllers.Signup).Methods("POST")
+func Routes(router *mux.Router, db *database.DataBase) {
+	router.HandleFunc("/login", controllers.Login(db)).Methods("POST")
+	router.HandleFunc("/signup", controllers.Signup(db)).Methods("POST")
 
 	router.HandleFunc("/login", LoginGet).Methods("GET")
 	router.HandleFunc("/", controllers.Home).Methods("GET")

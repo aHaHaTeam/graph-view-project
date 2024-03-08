@@ -30,12 +30,12 @@ func main() {
 	if err != nil {
 		return
 	}
-
-	db := database.MockDB{}
-	_ = db.Connect()
+	var db database.DataBase
+	db = &database.MockDB{}
+	_ = db.Connect("postgres")
 
 	router := mux.NewRouter()
-	routes.Routes(router)
+	routes.Routes(router, &db)
 
 	//
 	//fs := http.FileServer(http.Dir("../static/styles/"))

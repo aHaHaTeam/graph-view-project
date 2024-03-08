@@ -1,11 +1,13 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 
 	_ "github.com/lib/pq"
+	. "github.com/BuriedInTheGround/pigowa"
+	_ "github.com/joho/godotenv/autoload"
+	"graph-view-project/wasm/database"
 )
 
 type Product struct {
@@ -15,25 +17,18 @@ type Product struct {
 }
 
 func main() {
-	user := "postgres"
-	password := "password"
-	host := "database-1239.cpyasqckugo5.eu-north-1.rds.amazonaws.com"
-	port := "5432"
-	dbName := "pgadmindb"
-	template := "postgres://%s:%s@%s:%s/%s"
+	done := make(chan struct{})
+	fmt.Println("Hello Gopher!")
+	db, _ := database.Connect("graph-view-project")
+	_ = db
+	Setup(func() interface{} {
+		//canvasSize := js.Global().Get("document").Call("getElementById", "canvas").Call("getBoundingClientRect")
+		//CreateCanvas(canvasSize.Get("width").Int(), canvasSize.Get("height").Int())
+		CreateCanvas(WindowWidth(), WindowHeight())
+		return nil
+	})
 
-	connStr := fmt.Sprintf(template, user, password, host, port, dbName)
-	db, err := sql.Open("postgres", connStr)
-
-	defer db.Close()
-	if err != nil {
-		panic(err)
-	}
-	if err = db.Ping(); err != nil {
-		log.Fatal(err)
-	}
-
-	CreateTable(db)
+	doDraw := true
 
 	product := Product{"Book", 15.55, true}
 	pk := InsertProduct(db, product)

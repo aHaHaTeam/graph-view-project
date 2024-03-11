@@ -3,7 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"graph-view-project/database"
-	"graph-view-project/server/models"
+	"graph-view-project/models"
 	"graph-view-project/server/utils"
 	"log"
 	"net/http"

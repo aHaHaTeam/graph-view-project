@@ -1,8 +1,8 @@
 package facades
 
 import (
+	"graph-view-project/models"
 	"graph-view-project/wasm/gui"
-	"graph-view-project/wasm/models"
 	"graph-view-project/wasm/physics"
 	"image/color"
 )

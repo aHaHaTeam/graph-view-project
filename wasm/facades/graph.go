@@ -2,7 +2,7 @@ package facades
 
 import (
 	"database/sql"
-	"graph-view-project/wasm/models"
+	"graph-view-project/models"
 	"log"
 )
 

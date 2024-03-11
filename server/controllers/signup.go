@@ -16,7 +16,6 @@ func Signup(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 
 		if err := decoder.Decode(&user); err != nil {
 			w.Header().Add("success", "Invalid username or password")
-			//http.Error(w, err.Error(), 400)
 			log.Println(err)
 			return
 		}
@@ -26,7 +25,6 @@ func Signup(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 
 		if err != nil {
 			w.Header().Add("success", "Invalid password")
-			//http.Error(w, "could not generate password hash", http.StatusInternalServerError)
 			log.Println(err)
 			return
 		}
@@ -35,7 +33,6 @@ func Signup(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 
 		if err != nil {
 			w.Header().Add("success", "User with this username already exists")
-			//http.Error(w, "user already exists", http.StatusBadRequest)
 			log.Println(err)
 			return
 		}

@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	err := godotenv.Load("../.env")
+	err := godotenv.Load("./.env")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -35,12 +35,7 @@ func main() {
 	_ = db.Connect("postgres")
 
 	router := mux.NewRouter()
-	routes.Routes(router, &db)
-
-	//
-	//fs := http.FileServer(http.Dir("../static/styles/"))
-	//router.Handle("/styles", fs)
-	//router.Handle("/scripts", http.FileServer(http.Dir("../static/scripts/")))
+	routes.AddRoutes(router, &db)
 
 	log.Println("Listening on port :8080")
 

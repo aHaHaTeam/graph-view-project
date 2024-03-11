@@ -11,8 +11,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("token")
 
 	if err != nil {
-		http.Error(w, "unauthorized", http.StatusUnauthorized)
-		//http.ServeFile(w, r, "../client/static/login.html")
+		LoginGet(w, r)
 		log.Println(err)
 		return
 	}
@@ -20,8 +19,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	claims, err := utils.ParseToken(cookie.Value)
 
 	if err != nil {
-		http.Error(w, "unauthorized", http.StatusUnauthorized)
-		//http.ServeFile(w, r, "../client/static/login.html")
+		LoginGet(w, r)
 		log.Println(err)
 		return
 	}
@@ -29,5 +27,5 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("success", "home page")
 	r.Header.Add("email", strconv.Itoa(claims.UserId))
 
-	http.ServeFile(w, r, "../client/static/index.html")
+	http.ServeFile(w, r, "./client/static/index.html")
 }

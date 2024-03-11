@@ -19,7 +19,6 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 
 		if err := decoder.Decode(&user); err != nil {
 			w.Header().Add("success", "Invalid login or password")
-			//http.Error(w, err.Error(), http.StatusBadRequest)
 			log.Println(err)
 			return
 		}
@@ -29,7 +28,6 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 
 		if err != nil {
 			w.Header().Add("success", "Invalid login or password")
-			//http.Error(w, "user does not exist", http.StatusBadRequest)
 			log.Println(err)
 			return
 		}
@@ -38,7 +36,6 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 
 		if err != nil {
 			w.Header().Add("success", "Invalid login or password")
-			//http.Error(w, "invalid password", http.StatusBadRequest)
 			log.Println(err)
 			return
 		}
@@ -59,7 +56,6 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 
 		if err != nil {
 			w.Header().Add("success", "Invalid login or password")
-			//http.Error(w, "could not generate token", http.StatusInternalServerError)
 			log.Println(err)
 			return
 		}

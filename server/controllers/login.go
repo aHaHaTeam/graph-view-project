@@ -22,7 +22,7 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 			log.Println(err)
 			return
 		}
-		var existingUser models.User
+		var existingUser *models.User
 
 		existingUser, err := (*db).GetUserByLogin(user.Login)
 

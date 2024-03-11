@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/joho/godotenv"
-	"graph-view-project/server/models"
+	"graph-view-project/models"
 	"log"
 	"os"
 )
@@ -35,6 +35,15 @@ func (db *PostgresDB) Connect(databaseName string) error {
 	return nil
 }
 
+func (db *PostgresDB) CreateUser(user models.User) error {
+	query := `INSERT INTO users (login, email, password) VALUES ($1, $2, $3)`
+	err := db.Connection.QueryRow(query, user.Login, user.Email, user.Password).Err()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (db *PostgresDB) GetUserByLogin(login string) (*models.User, error) {
 	query := `SELECT * FROM users WHERE login = $1`
 	var email, password string
@@ -45,11 +54,22 @@ func (db *PostgresDB) GetUserByLogin(login string) (*models.User, error) {
 	return &models.User{Id: 0, Login: login, Email: email, Password: password}, nil
 }
 
-func (db *PostgresDB) CreateUser(login, email, password string) error {
-	query := `INSERT INTO users (login, email, password) VALUES ($1, $2, $3)`
-	err := db.Connection.QueryRow(query, login, email, password).Err()
-	if err != nil {
-		return err
-	}
-	return nil
+func (db *PostgresDB) CreateGraph(user models.User, graph models.Graph) error {
+	return error(nil)
+}
+func (db *PostgresDB) CreateNode(graph models.Graph, node models.Node) error {
+	return error(nil)
+}
+func (db *PostgresDB) CreateEdge(graph models.Graph, edge models.Edge) error {
+	return error(nil)
+}
+
+func (db *PostgresDB) GetGraphById(id int) (*models.Graph, error) {
+	return nil, error(nil)
+}
+func (db *PostgresDB) GetEdgeById(id int) (*models.Edge, error) {
+	return nil, error(nil)
+}
+func (db *PostgresDB) GetNodeById(id int) (*models.Node, error) {
+	return nil, error(nil)
 }

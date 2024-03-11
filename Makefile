@@ -1,7 +1,9 @@
+all: build run
+
 build:
 	GOOS=js GOARCH=wasm go build -o ./client/static/main.wasm ./wasm/*.go
 
-run-server:
+run:
 	go run server/main.go
 
 clean:

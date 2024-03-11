@@ -35,6 +35,7 @@ loginForm.addEventListener("submit", (e) => {
             }
         }).then(response => {
             if (response.headers.get("success") === "User logged in") {
+                document.location.reload();
                 document.location.replace("http://localhost:8080/")
                 return null
             } else {

@@ -6,7 +6,8 @@ import (
 )
 
 func TestConnection(t *testing.T) {
-	db, err := Connect("test")
+	db := PostgresDB{}
+	err := db.Connect("test")
 	assert.Nil(t, err)
 
 	err = db.Close()

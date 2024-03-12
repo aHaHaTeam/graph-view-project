@@ -35,6 +35,11 @@ func (db *PostgresDB) Connect(databaseName string) error {
 	return nil
 }
 
+func (db *PostgresDB) Close() error {
+	err := db.Connection.Close()
+	return err
+}
+
 func (db *PostgresDB) CreateUser(user models.User) error {
 	query := `INSERT INTO users (login, email, password) VALUES ($1, $2, $3)`
 	err := db.Connection.QueryRow(query, user.Login, user.Email, user.Password).Err()

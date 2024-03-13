@@ -4,7 +4,8 @@ import "graph-view-project/models"
 
 type DataBase interface {
 	Connect(databaseName string) error
-	Close() error
+	Disconnect() error
+
 	CreateUser(user models.User) error
 	CreateGraph(user models.User, graph models.Graph) error
 	CreateNode(graph models.Graph, node models.Node) error

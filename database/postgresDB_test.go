@@ -10,6 +10,6 @@ func TestConnection(t *testing.T) {
 	err := db.Connect("test")
 	assert.Nil(t, err)
 
-	err = db.Close()
+	err = db.Disconnect()
 	assert.Nil(t, err)
 }

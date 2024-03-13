@@ -35,7 +35,7 @@ func (db *PostgresDB) Connect(databaseName string) error {
 	return nil
 }
 
-func (db *PostgresDB) Close() error {
+func (db *PostgresDB) Disconnect() error {
 	err := db.Connection.Close()
 	return err
 }

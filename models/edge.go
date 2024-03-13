@@ -1,18 +1,17 @@
 package models
 
-import (
-	"database/sql"
-	"graph-view-project/wasm/gui"
-	"image/color"
-	"log"
-)
-
 type Edge struct {
 	id          int
 	name        string
 	description string
 }
 
+func (edge *Edge) GetId() int {
+	return edge.id
+}
+
+// This seems to be VERY deprecated code. These functions were all moved to responsibilities of a database
+/*
 func (edge *Edge) Insert(db *sql.DB, color color.Color, shape gui.EdgeShape, width float32) {
 	data := string(edge.description[:])
 	_, err := db.Exec("INSERT INTO Edges (id, name, data, color, shape, width) VALUES ($1, $2, $3, $4, $5, $6)",
@@ -37,3 +36,4 @@ func (edge *Edge) Delete(db *sql.DB) {
 		log.Fatal(err)
 	}
 }
+*/

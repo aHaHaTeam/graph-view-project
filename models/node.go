@@ -1,16 +1,13 @@
 package models
 
-import (
-	"database/sql"
-	"graph-view-project/wasm/gui"
-	"image/color"
-	"log"
-)
-
 type Node struct {
 	id   int
 	name string
 	data []byte
+}
+
+func (node *Node) GetId() int {
+	return node.id
 }
 
 func (node *Node) SetId(id int) {
@@ -25,6 +22,8 @@ func (node *Node) SetData(data []byte) {
 	node.data = data
 }
 
+// This seems to be VERY deprecated code. These functions were all moved to responsibilities of a database
+/*
 func (node *Node) Insert(db *sql.DB, color color.Color, shape gui.NodeShape, size float32) {
 	data := string(node.data[:])
 	_, err := db.Exec("INSERT INTO Nodes (id, name, data, color, shape, size) VALUES ($1, $2, $3, $4, $5, $6)",
@@ -49,3 +48,4 @@ func (node *Node) Delete(db *sql.DB) {
 		log.Fatal(err)
 	}
 }
+*/

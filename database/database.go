@@ -15,4 +15,9 @@ type DataBase interface {
 	GetGraphById(id int) (*models.Graph, error)
 	GetEdgeById(id int) (*models.Edge, error)
 	GetNodeById(id int) (*models.Node, error)
+
+	UpdateUserByLogin(login string, newUser models.User) error
+	UpdateGraphById(id int, newGraph models.Graph) error
+	UpdateEdgeById(id int, newEdge models.Edge) error
+	UpdateNodeById(id int, newNode models.Node) error
 }

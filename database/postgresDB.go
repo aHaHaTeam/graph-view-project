@@ -78,3 +78,19 @@ func (db *PostgresDB) GetEdgeById(id int) (*models.Edge, error) {
 func (db *PostgresDB) GetNodeById(id int) (*models.Node, error) {
 	return nil, error(nil)
 }
+
+func (db *PostgresDB) UpdateUserByLogin(login string, newUser models.User) error {
+	return error(nil)
+}
+
+func (db *PostgresDB) UpdateGraphById(id int, newGraph models.Graph) error {
+	return error(nil)
+}
+
+func (db *PostgresDB) UpdateEdgeById(id int, newEdge models.Edge) error {
+	return error(nil)
+}
+
+func (db *PostgresDB) UpdateNodeById(id int, newNode models.Node) error {
+	return error(nil)
+}

@@ -16,6 +16,9 @@ type MockDB struct {
 func (db *MockDB) Connect(databaseName string) error {
 	_ = databaseName //this parameter is useless because this method is just a Mock
 	db.users = make(map[string]*models.User)
+	db.graphs = make(map[int]*models.Graph)
+	db.edges = make(map[int]*models.Edge)
+	db.nodes = make(map[int]*models.Node)
 
 	hash, _ := utils.GenerateHashPassword("password")
 	_ = db.CreateUser(models.User{Id: 1, Login: "user", Email: "user@user", Password: hash, Graphs: make([]models.Graph, 0)})
@@ -28,6 +31,8 @@ func (db *MockDB) Connect(databaseName string) error {
 func (db *MockDB) Disconnect() error {
 	db.users = nil
 	db.graphs = nil
+	db.edges = nil
+	db.nodes = nil
 	return nil
 }
 
@@ -109,4 +114,44 @@ func (db *MockDB) GetNodeById(id int) (*models.Node, error) {
 	}
 
 	return node, nil
+}
+
+func (db *MockDB) UpdateUserByLogin(login string, newUser models.User) error {
+	user, err := db.GetUserByLogin(login)
+	if err != nil {
+		return err
+	}
+
+	*user = newUser
+	return nil
+}
+
+func (db *MockDB) UpdateGraphById(id int, newGraph models.Graph) error {
+	graph, err := db.GetGraphById(id)
+	if err != nil {
+		return err
+	}
+
+	*graph = newGraph
+	return nil
+}
+
+func (db *MockDB) UpdateEdgeById(id int, newEdge models.Edge) error {
+	edge, err := db.GetEdgeById(id)
+	if err != nil {
+		return err
+	}
+
+	*edge = newEdge
+	return nil
+}
+
+func (db *MockDB) UpdateNodeById(id int, newNode models.Node) error {
+	node, err := db.GetNodeById(id)
+	if err != nil {
+		return err
+	}
+
+	*node = newNode
+	return nil
 }

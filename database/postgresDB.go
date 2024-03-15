@@ -59,13 +59,13 @@ func (db *PostgresDB) GetUserByLogin(login string) (*models.User, error) {
 	return &models.User{Id: 0, Login: login, Email: email, Password: password}, nil
 }
 
-func (db *PostgresDB) CreateGraph(graph models.Graph) error {
+func (db *PostgresDB) CreateGraph(user models.User, graph models.Graph) error {
 	return error(nil)
 }
-func (db *PostgresDB) CreateNode(node models.Node) error {
+func (db *PostgresDB) CreateNode(graph models.Graph, node models.Node) error {
 	return error(nil)
 }
-func (db *PostgresDB) CreateEdge(edge models.Edge) error {
+func (db *PostgresDB) CreateEdge(graph models.Graph, edge models.Edge) error {
 	return error(nil)
 }
 
@@ -79,7 +79,7 @@ func (db *PostgresDB) GetNodeById(id int) (*models.Node, error) {
 	return nil, error(nil)
 }
 
-func (db *PostgresDB) UpdateUserByLogin(login string, newUser models.User) error {
+func (db *PostgresDB) UpdateUserByLogin(newUser models.User) error {
 	return error(nil)
 }
 

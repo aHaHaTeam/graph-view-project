@@ -47,40 +47,53 @@ func TestCreateUser(t *testing.T) {
 
 func TestCreateGraph(t *testing.T) {
 	t.Cleanup(CleanUp)
+	user := models.User{}
+	_ = testedDB.CreateUser(user)
 
 	graph := models.Graph{Edges: make([]models.Edge, 0), Nodes: make([]models.Node, 0)}
 	graph.SetId(1)
 
-	err := testedDB.CreateGraph(graph)
+	err := testedDB.CreateGraph(user, graph)
 	assert.Nil(t, err)
 
-	err = testedDB.CreateGraph(graph)
+	err = testedDB.CreateGraph(user, graph)
 	assert.NotNil(t, err)
 }
 
 func TestCreateNode(t *testing.T) {
 	t.Cleanup(CleanUp)
+	user := models.User{}
+	_ = testedDB.CreateUser(user)
+
+	graph := models.Graph{}
+	_ = testedDB.CreateGraph(user, graph)
 
 	node := models.Node{}
 	node.SetId(1)
 
-	err := testedDB.CreateNode(node)
+	err := testedDB.CreateNode(graph, node)
 	assert.Nil(t, err)
 
-	err = testedDB.CreateNode(node)
+	err = testedDB.CreateNode(graph, node)
 	assert.NotNil(t, err)
 }
 
 func TestCreateEdge(t *testing.T) {
 	t.Cleanup(CleanUp)
 
+	user := models.User{}
+	_ = testedDB.CreateUser(user)
+
+	graph := models.Graph{}
+	_ = testedDB.CreateGraph(user, graph)
+
 	edge := models.Edge{}
 	edge.SetId(1)
 
-	err := testedDB.CreateEdge(edge)
+	err := testedDB.CreateEdge(graph, edge)
 	assert.Nil(t, err)
 
-	err = testedDB.CreateEdge(edge)
+	err = testedDB.CreateEdge(graph, edge)
 	assert.NotNil(t, err)
 }
 
@@ -103,27 +116,29 @@ func TestUpdateUser(t *testing.T) {
 	userInDb, _ := testedDB.GetUserByLogin("1")
 	assert.Equal(t, 0, len(userInDb.Graphs))
 
-	err := testedDB.UpdateUserByLogin(user.Login, user)
+	err := testedDB.UpdateUserByLogin(user)
 	assert.Nil(t, err)
 
 	userInDb, _ = testedDB.GetUserByLogin("1")
 	assert.Equal(t, 1, len(userInDb.Graphs))
 
-	notExistingLogin := "fake"
-	err = testedDB.UpdateUserByLogin(notExistingLogin, user)
+	user.Login = "invalidLogin"
+	err = testedDB.UpdateUserByLogin(user)
 	assert.NotNil(t, err)
 }
 
 func TestUpdateGraph(t *testing.T) {
 	t.Cleanup(CleanUp)
 
+	user := models.User{}
+	_ = testedDB.CreateUser(user)
 	graph := models.Graph{
 		Nodes: make([]models.Node, 0),
 		Edges: make([]models.Edge, 0),
 	}
 	graph.SetId(1)
 
-	_ = testedDB.CreateGraph(graph)
+	_ = testedDB.CreateGraph(user, graph)
 
 	node := models.Node{}
 	edge := models.Edge{}

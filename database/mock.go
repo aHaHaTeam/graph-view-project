@@ -43,11 +43,10 @@ func (db *MockDB) CreateUser(user models.User) error {
 	}
 
 	db.users[user.Login] = &user
-
 	return nil
 }
 
-func (db *MockDB) CreateGraph(graph models.Graph) error {
+func (db *MockDB) CreateGraph(user models.User, graph models.Graph) error {
 	_, ok := db.graphs[graph.GetId()]
 	if ok {
 		return errors.New("graph already exists")
@@ -55,9 +54,10 @@ func (db *MockDB) CreateGraph(graph models.Graph) error {
 
 	db.graphs[graph.GetId()] = &graph
 
-	return nil
+	err := db.UpdateUserByLogin(user)
+	return err
 }
-func (db *MockDB) CreateNode(node models.Node) error {
+func (db *MockDB) CreateNode(graph models.Graph, node models.Node) error {
 	_, ok := db.nodes[node.GetId()]
 	if ok {
 		return errors.New("node already exists")
@@ -65,9 +65,10 @@ func (db *MockDB) CreateNode(node models.Node) error {
 
 	db.nodes[node.GetId()] = &node
 
-	return nil
+	err := db.UpdateGraphById(graph.GetId(), graph)
+	return err
 }
-func (db *MockDB) CreateEdge(edge models.Edge) error {
+func (db *MockDB) CreateEdge(graph models.Graph, edge models.Edge) error {
 	_, ok := db.edges[edge.GetId()]
 	if ok {
 		return errors.New("edge already exists")
@@ -75,7 +76,8 @@ func (db *MockDB) CreateEdge(edge models.Edge) error {
 
 	db.edges[edge.GetId()] = &edge
 
-	return nil
+	err := db.UpdateGraphById(graph.GetId(), graph)
+	return err
 }
 
 func (db *MockDB) GetUserByLogin(login string) (*models.User, error) {
@@ -112,8 +114,8 @@ func (db *MockDB) GetNodeById(id int) (*models.Node, error) {
 	return node, nil
 }
 
-func (db *MockDB) UpdateUserByLogin(login string, newUser models.User) error {
-	user, err := db.GetUserByLogin(login)
+func (db *MockDB) UpdateUserByLogin(newUser models.User) error {
+	user, err := db.GetUserByLogin(newUser.Login)
 	if err != nil {
 		return err
 	}

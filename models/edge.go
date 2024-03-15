@@ -10,6 +10,10 @@ func (edge *Edge) GetId() int {
 	return edge.id
 }
 
+func (edge *Edge) SetId(id int) {
+	edge.id = id
+}
+
 // This seems to be VERY deprecated code. These functions were all moved to responsibilities of a database
 /*
 func (edge *Edge) Insert(db *sql.DB, color color.Color, shape gui.EdgeShape, width float32) {

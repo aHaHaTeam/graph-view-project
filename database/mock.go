@@ -47,9 +47,7 @@ func (db *MockDB) CreateUser(user models.User) error {
 	return nil
 }
 
-func (db *MockDB) CreateGraph(user models.User, graph models.Graph) error {
-	_ = user //parameter user is needed to add a link to this new graph into user data.
-	//therefore, here in Mock we use pointers to objects, so we do not have to change them manually
+func (db *MockDB) CreateGraph(graph models.Graph) error {
 	_, ok := db.graphs[graph.GetId()]
 	if ok {
 		return errors.New("graph already exists")
@@ -59,22 +57,20 @@ func (db *MockDB) CreateGraph(user models.User, graph models.Graph) error {
 
 	return nil
 }
-func (db *MockDB) CreateNode(graph models.Graph, node models.Node) error {
-	_ = graph //in case of questions, read comment in the CreateGraph func
+func (db *MockDB) CreateNode(node models.Node) error {
 	_, ok := db.nodes[node.GetId()]
 	if ok {
-		return errors.New("graph already exists")
+		return errors.New("node already exists")
 	}
 
 	db.nodes[node.GetId()] = &node
 
 	return nil
 }
-func (db *MockDB) CreateEdge(graph models.Graph, edge models.Edge) error {
-	_ = graph //in case of questions, read comment in the CreateGraph func
-	_, ok := db.nodes[edge.GetId()]
+func (db *MockDB) CreateEdge(edge models.Edge) error {
+	_, ok := db.edges[edge.GetId()]
 	if ok {
-		return errors.New("graph already exists")
+		return errors.New("edge already exists")
 	}
 
 	db.edges[edge.GetId()] = &edge

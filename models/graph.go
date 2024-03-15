@@ -8,6 +8,11 @@ type Graph struct {
 	Edges       []Edge
 }
 
+func (graph *Graph) SetId(newId int) *Graph {
+	graph.id = newId
+	return graph
+}
+
 func (graph *Graph) GetId() int {
 	return graph.id
 }

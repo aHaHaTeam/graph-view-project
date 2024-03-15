@@ -7,9 +7,9 @@ type DataBase interface {
 	Disconnect() error
 
 	CreateUser(user models.User) error
-	CreateGraph(user models.User, graph models.Graph) error
-	CreateNode(graph models.Graph, node models.Node) error
-	CreateEdge(graph models.Graph, edge models.Edge) error
+	CreateGraph(graph models.Graph) error
+	CreateNode(node models.Node) error
+	CreateEdge(edge models.Edge) error
 
 	GetUserByLogin(login string) (*models.User, error)
 	GetGraphById(id int) (*models.Graph, error)

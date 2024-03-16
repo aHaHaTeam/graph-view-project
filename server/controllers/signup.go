@@ -3,7 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"graph-view-project/database"
-	"graph-view-project/server/models"
+	"graph-view-project/models"
 	"graph-view-project/server/utils"
 	"log"
 	"net/http"
@@ -29,7 +29,7 @@ func Signup(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 			return
 		}
 
-		err = (*db).CreateUser(user.Login, user.Email, user.Password)
+		err = (*db).CreateUser(user)
 
 		if err != nil {
 			w.Header().Add("success", "User with this username already exists")

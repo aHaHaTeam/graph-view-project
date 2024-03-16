@@ -29,6 +29,6 @@ func (*Edge) SetNodeColor(color color.Color) {
 	panic("not implemented exception")
 }
 
-func (*Edge) SetNodeShape(data gui.EdgeShape) {
+func (*Edge) SetNodeShape(data models.EdgeShape) {
 	panic("not implemented exception")
 }

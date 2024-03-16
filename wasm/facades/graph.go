@@ -13,7 +13,7 @@ type Graph struct {
 }
 
 func (graph *Graph) GetId() int {
-	return graph.model.GetId()
+	return graph.model.Id
 }
 
 func (graph *Graph) LoadNodes(db *sql.DB) {

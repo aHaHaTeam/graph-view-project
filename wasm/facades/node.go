@@ -26,22 +26,22 @@ func (node *Node) Move(time float64) {
 }
 
 func (node *Node) SetNodeId(id int) {
-	node.model.SetId(id)
+	node.model.Id = id
 }
 
 func (node *Node) SetNodeName(name string) {
-	node.model.SetName(name)
+	node.model.Name = name
 }
 
 func (node *Node) SetNodeData(data []byte) {
-	node.model.SetData(data)
+	node.model.Data = data
 }
 
 func (node *Node) SetNodeColor(color color.Color) {
 	node.node.SetColor(color)
 }
 
-func (node *Node) SetNodeShape(shape gui.NodeShape) {
+func (node *Node) SetNodeShape(shape models.NodeShape) {
 	node.node.SetShape(shape)
 }
 

@@ -47,36 +47,36 @@ func (db *MockDB) CreateUser(user models.User) error {
 }
 
 func (db *MockDB) CreateGraph(user models.User, graph models.Graph) error {
-	_, ok := db.graphs[graph.GetId()]
+	_, ok := db.graphs[graph.Id]
 	if ok {
 		return errors.New("graph already exists")
 	}
 
-	db.graphs[graph.GetId()] = &graph
+	db.graphs[graph.Id] = &graph
 
 	err := db.UpdateUserByLogin(user)
 	return err
 }
 func (db *MockDB) CreateNode(graph models.Graph, node models.Node) error {
-	_, ok := db.nodes[node.GetId()]
+	_, ok := db.nodes[node.Id]
 	if ok {
 		return errors.New("node already exists")
 	}
 
-	db.nodes[node.GetId()] = &node
+	db.nodes[node.Id] = &node
 
-	err := db.UpdateGraphById(graph.GetId(), graph)
+	err := db.UpdateGraphById(graph.Id, graph)
 	return err
 }
 func (db *MockDB) CreateEdge(graph models.Graph, edge models.Edge) error {
-	_, ok := db.edges[edge.GetId()]
+	_, ok := db.edges[edge.Id]
 	if ok {
 		return errors.New("edge already exists")
 	}
 
-	db.edges[edge.GetId()] = &edge
+	db.edges[edge.Id] = &edge
 
-	err := db.UpdateGraphById(graph.GetId(), graph)
+	err := db.UpdateGraphById(graph.Id, graph)
 	return err
 }
 

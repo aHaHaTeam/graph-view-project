@@ -1,25 +1,21 @@
 package models
 
+import "image/color"
+
+type NodeShape int
+
+const (
+	Circle NodeShape = iota
+	Square
+)
+
 type Node struct {
-	id   int
-	name string
-	data []byte
-}
-
-func (node *Node) GetId() int {
-	return node.id
-}
-
-func (node *Node) SetId(id int) {
-	node.id = id
-}
-
-func (node *Node) SetName(name string) {
-	node.name = name
-}
-
-func (node *Node) SetData(data []byte) {
-	node.data = data
+	Id    int
+	Name  string
+	Data  []byte
+	Color color.Color
+	Shape NodeShape
+	Size  float32
 }
 
 // This seems to be VERY deprecated code. These functions were all moved to responsibilities of a database

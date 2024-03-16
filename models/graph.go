@@ -1,18 +1,9 @@
 package models
 
 type Graph struct {
-	id          int
-	name        string
-	description string
+	Id          int
+	Name        string
+	Description string
 	Nodes       []Node
 	Edges       []Edge
-}
-
-func (graph *Graph) SetId(newId int) *Graph {
-	graph.id = newId
-	return graph
-}
-
-func (graph *Graph) GetId() int {
-	return graph.id
 }

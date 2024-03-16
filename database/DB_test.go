@@ -50,8 +50,7 @@ func TestCreateGraph(t *testing.T) {
 	user := models.User{}
 	_ = testedDB.CreateUser(user)
 
-	graph := models.Graph{Edges: make([]models.Edge, 0), Nodes: make([]models.Node, 0)}
-	graph.SetId(1)
+	graph := models.Graph{Id: 1, Edges: make([]models.Edge, 0), Nodes: make([]models.Node, 0)}
 
 	err := testedDB.CreateGraph(user, graph)
 	assert.Nil(t, err)
@@ -68,8 +67,7 @@ func TestCreateNode(t *testing.T) {
 	graph := models.Graph{}
 	_ = testedDB.CreateGraph(user, graph)
 
-	node := models.Node{}
-	node.SetId(1)
+	node := models.Node{Id: 1}
 
 	err := testedDB.CreateNode(graph, node)
 	assert.Nil(t, err)
@@ -87,8 +85,7 @@ func TestCreateEdge(t *testing.T) {
 	graph := models.Graph{}
 	_ = testedDB.CreateGraph(user, graph)
 
-	edge := models.Edge{}
-	edge.SetId(1)
+	edge := models.Edge{Id: 1}
 
 	err := testedDB.CreateEdge(graph, edge)
 	assert.Nil(t, err)
@@ -109,8 +106,7 @@ func TestUpdateUser(t *testing.T) {
 	}
 	_ = testedDB.CreateUser(user)
 
-	graph := models.Graph{Nodes: nil, Edges: nil}
-	graph.SetId(239)
+	graph := models.Graph{Id: 239, Nodes: nil, Edges: nil}
 	user.Graphs = append(user.Graphs, graph)
 
 	userInDb, _ := testedDB.GetUserByLogin("1")
@@ -133,11 +129,10 @@ func TestUpdateGraph(t *testing.T) {
 	user := models.User{}
 	_ = testedDB.CreateUser(user)
 	graph := models.Graph{
+		Id:    1,
 		Nodes: make([]models.Node, 0),
 		Edges: make([]models.Edge, 0),
 	}
-	graph.SetId(1)
-
 	_ = testedDB.CreateGraph(user, graph)
 
 	node := models.Node{}
@@ -148,7 +143,7 @@ func TestUpdateGraph(t *testing.T) {
 	graphInDB, _ := testedDB.GetGraphById(1)
 	assert.Equal(t, 0, len(graphInDB.Nodes))
 
-	_ = testedDB.UpdateGraphById(graph.GetId(), graph)
+	_ = testedDB.UpdateGraphById(graph.Id, graph)
 	graphInDB, _ = testedDB.GetGraphById(1)
 	assert.Equal(t, 1, len(graphInDB.Nodes))
 	assert.Equal(t, edge, graphInDB.Edges[0])

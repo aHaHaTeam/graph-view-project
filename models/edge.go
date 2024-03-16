@@ -1,17 +1,21 @@
 package models
 
+import "image/color"
+
+type EdgeShape int
+
+const (
+	Arrow EdgeShape = iota
+	Line
+)
+
 type Edge struct {
-	id          int
-	name        string
-	description string
-}
-
-func (edge *Edge) GetId() int {
-	return edge.id
-}
-
-func (edge *Edge) SetId(id int) {
-	edge.id = id
+	Id          int
+	Name        string
+	Description string
+	Width       float32
+	Color       color.Color
+	Shape       EdgeShape
 }
 
 // This seems to be VERY deprecated code. These functions were all moved to responsibilities of a database

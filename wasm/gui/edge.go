@@ -1,21 +1,15 @@
 package gui
 
 import (
+	"graph-view-project/models"
 	"graph-view-project/wasm/physics"
 	"image/color"
-)
-
-type EdgeShape int
-
-const (
-	Arrow EdgeShape = iota
-	Line
 )
 
 type Edge struct {
 	width float32
 	color color.Color
-	shape EdgeShape
+	shape models.EdgeShape
 }
 
 func (edge *Edge) Draw(begin, end physics.Vec2d) {
@@ -26,6 +20,6 @@ func (edge *Edge) SetColor(color color.Color) {
 	edge.color = color
 }
 
-func (edge *Edge) SetShape(shape EdgeShape) {
+func (edge *Edge) SetShape(shape models.EdgeShape) {
 	edge.shape = shape
 }

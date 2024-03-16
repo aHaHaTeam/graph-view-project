@@ -1,19 +1,13 @@
 package gui
 
 import (
+	"graph-view-project/models"
 	"image/color"
-)
-
-type NodeShape int
-
-const (
-	Circle NodeShape = iota
-	Square
 )
 
 type Node struct {
 	color color.Color
-	shape NodeShape
+	shape models.NodeShape
 	size  float32
 }
 
@@ -25,7 +19,7 @@ func (node *Node) SetColor(color color.Color) {
 	node.color = color
 }
 
-func (node *Node) SetShape(shape NodeShape) {
+func (node *Node) SetShape(shape models.NodeShape) {
 	node.shape = shape
 }
 

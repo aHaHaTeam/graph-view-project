@@ -10,6 +10,10 @@ type Node struct {
 	edgesOut []*Edge
 }
 
+func NewNode() *Node {
+	return &Node{}
+}
+
 func (node *Node) Update(c chan struct{}, nodes *[]Node, graph *Graph) {
 	if node.isPinned {
 		node.velocity = Vec2d{0, 0}
@@ -19,11 +23,11 @@ func (node *Node) Update(c chan struct{}, nodes *[]Node, graph *Graph) {
 	resultantForce := centralForce(node, graph)
 
 	for _, e := range node.edgesIn {
-		resultantForce.add(springForce(e.end, e.begin, e))
+		resultantForce.add(springForce(e.end, e.begin, e, graph))
 	}
 
 	for _, e := range node.edgesOut {
-		resultantForce.add(springForce(e.begin, e.end, e))
+		resultantForce.add(springForce(e.begin, e.end, e, graph))
 	}
 
 	for _, n := range *nodes {

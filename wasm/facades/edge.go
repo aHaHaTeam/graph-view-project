@@ -2,33 +2,56 @@ package facades
 
 import (
 	"graph-view-project/models"
+	"graph-view-project/wasm/content"
 	"graph-view-project/wasm/gui"
 	"graph-view-project/wasm/physics"
-	"image/color"
 )
 
 type Edge struct {
-	model   models.Edge
-	segment physics.Edge
-	edge    gui.Edge
+	id      int
+	begin   *Node
+	end     *Node
+	content *content.Edge
+	segment *physics.Edge
+	edge    *gui.Edge
+}
+
+func NewEdge(model *models.Edge) *Edge {
+	return &Edge{
+		id: model.Id,
+
+		content: content.NewEdge(
+			model.Name,
+			model.Description,
+		),
+		segment: &physics.Edge{},
+		edge: gui.NewEdge(
+			model.Width,
+			model.Color,
+			model.Shape,
+		),
+	}
+}
+
+func (e *Edge) GetModel() models.Edge {
+	return models.Edge{
+		Id:          e.id,
+		Name:        e.content.Name(),
+		Description: e.content.Description(),
+		Width:       e.edge.Width(),
+		Color:       e.edge.Color(),
+		Shape:       e.edge.Shape(),
+	}
+}
+
+func (e *Edge) SetBegin(node *Node) {
+	e.begin = node
+}
+
+func (e *Edge) SetEnd(node *Node) {
+	e.end = node
 }
 
 func (*Edge) Draw() {
-	panic("not implemented exception")
-}
-
-func (*Edge) SetEdgeName(name string) {
-	panic("not implemented exception")
-}
-
-func (*Edge) SetNodeDescription(description string) {
-	panic("not implemented exception")
-}
-
-func (*Edge) SetNodeColor(color color.Color) {
-	panic("not implemented exception")
-}
-
-func (*Edge) SetNodeShape(data models.EdgeShape) {
 	panic("not implemented exception")
 }

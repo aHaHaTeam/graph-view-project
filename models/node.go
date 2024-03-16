@@ -11,11 +11,14 @@ const (
 
 type Node struct {
 	Id    int
-	Name  string
-	Data  []byte
+	Edges []int
+
+	Name string
+	Data []byte
+
+	Size  float32
 	Color color.Color
 	Shape NodeShape
-	Size  float32
 }
 
 // This seems to be VERY deprecated code. These functions were all moved to responsibilities of a database

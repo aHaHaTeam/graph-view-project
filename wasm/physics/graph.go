@@ -4,24 +4,26 @@ import (
 	"time"
 )
 
-type Graph struct {
-	lastTime time.Time
-
-	centralForceCoefficient   float64
-	repulsiveForceCoefficient float64
-	edgeLength                float64
-	edgeStiffness             float64
-
-	nodes *[]Node
+type PhysicalParameters struct {
+	CentralForceCoefficient   float64
+	RepulsiveForceCoefficient float64
+	EdgeLength                float64
+	EdgeStiffness             float64
+	NodeMass                  float64
 }
 
-func NewGraph(centralForceCoefficient, repulsiveForceCoefficient, edgeLength, edgeStiffness float64) *Graph {
+type Graph struct {
+	parameters PhysicalParameters
+	nodes      *[]*Node
+
+	lastTime time.Time
+}
+
+func NewGraph(parameters PhysicalParameters, nodes *[]*Node) *Graph {
 	return &Graph{
-		lastTime:                  time.Now(),
-		centralForceCoefficient:   centralForceCoefficient,
-		repulsiveForceCoefficient: repulsiveForceCoefficient,
-		edgeLength:                edgeLength,
-		edgeStiffness:             edgeStiffness,
+		parameters: parameters,
+		nodes:      nodes,
+		lastTime:   time.Now(),
 	}
 }
 

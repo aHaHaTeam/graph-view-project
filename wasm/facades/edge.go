@@ -4,7 +4,6 @@ import (
 	"graph-view-project/models"
 	"graph-view-project/wasm/content"
 	"graph-view-project/wasm/gui"
-	"graph-view-project/wasm/physics"
 )
 
 type Edge struct {
@@ -12,19 +11,18 @@ type Edge struct {
 	begin   *Node
 	end     *Node
 	content *content.Edge
-	segment *physics.Edge
 	edge    *gui.Edge
 }
 
-func NewEdge(model *models.Edge) *Edge {
+func newEdge(model *models.Edge, begin, end *Node) *Edge {
 	return &Edge{
-		id: model.Id,
-
+		id:    model.Id,
+		begin: begin,
+		end:   end,
 		content: content.NewEdge(
 			model.Name,
 			model.Description,
 		),
-		segment: &physics.Edge{},
 		edge: gui.NewEdge(
 			model.Width,
 			model.Color,
@@ -33,23 +31,23 @@ func NewEdge(model *models.Edge) *Edge {
 	}
 }
 
-func (e *Edge) GetModel() models.Edge {
-	return models.Edge{
-		Id:          e.id,
-		Name:        e.content.Name(),
-		Description: e.content.Description(),
-		Width:       e.edge.Width(),
-		Color:       e.edge.Color(),
-		Shape:       e.edge.Shape(),
+func (edge *Edge) GetModel() *models.Edge {
+	return &models.Edge{
+		Id:          edge.id,
+		Name:        edge.content.Name(),
+		Description: edge.content.Description(),
+		Width:       edge.edge.Width(),
+		Color:       edge.edge.Color(),
+		Shape:       edge.edge.Shape(),
 	}
 }
 
-func (e *Edge) SetBegin(node *Node) {
-	e.begin = node
+func (edge *Edge) SetBegin(node *Node) {
+	edge.begin = node
 }
 
-func (e *Edge) SetEnd(node *Node) {
-	e.end = node
+func (edge *Edge) SetEnd(node *Node) {
+	edge.end = node
 }
 
 func (*Edge) Draw() {

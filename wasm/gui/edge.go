@@ -35,6 +35,7 @@ func (edge *Edge) Color() color.Color {
 func (edge *Edge) SetColor(color color.Color) {
 	edge.color = color
 }
+
 func (edge *Edge) Shape() models.EdgeShape {
 	return edge.shape
 }

@@ -22,6 +22,28 @@ type Edge struct {
 	Shape EdgeShape
 }
 
+func NewEdge(
+	id int,
+	begin int,
+	end int,
+	name string,
+	description string,
+	width float32,
+	color color.Color,
+	shape EdgeShape,
+) *Edge {
+	return &Edge{
+		Id:          id,
+		Begin:       begin,
+		End:         end,
+		Name:        name,
+		Description: description,
+		Width:       width,
+		Color:       color,
+		Shape:       shape,
+	}
+}
+
 // This seems to be VERY deprecated code. These functions were all moved to responsibilities of a database
 /*
 func (edge *Edge) Insert(db *sql.DB, color color.Color, shape gui.EdgeShape, width float32) {

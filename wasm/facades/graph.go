@@ -3,6 +3,7 @@ package facades
 import (
 	"graph-view-project/models"
 	"graph-view-project/wasm/content"
+	"graph-view-project/wasm/gui"
 )
 
 type Graph struct {
@@ -13,6 +14,18 @@ type Graph struct {
 }
 
 func NewGraph(model models.Graph) *Graph {
+	return &Graph{
+		id: model.Id,
+		content: *content.NewGraph(
+			model.Name,
+			model.Description,
+		),
+		nodes: make([]*Node, 0),
+		edges: make([]*Edge, 0),
+	}
+}
+
+func LoadGraph(model models.Graph) *Graph {
 	nodes := make(map[int]*Node)
 	edges := make(map[int]*Edge)
 
@@ -25,23 +38,14 @@ func NewGraph(model models.Graph) *Graph {
 	}
 
 	for _, node := range model.Nodes {
-		nodes[node.Id] = NewNode(&node)
+		nodes[node.Id] = newNode(node)
 	}
 
 	for _, edge := range model.Edges {
-		edges[edge.Id] = NewEdge(&edge)
+		edges[edge.Id] = newEdge(edge, nodes[edge.Begin], nodes[edge.End])
 	}
 
-	for _, node := range model.Nodes {
-		for _, edgeId := range node.Edges {
-			nodes[node.Id].edges = append(nodes[node.Id].edges, edges[edgeId])
-		}
-	}
-
-	for _, edge := range model.Edges {
-		edges[edge.Id].SetBegin(nodes[edge.Begin])
-		edges[edge.Id].SetEnd(nodes[edge.End])
-	}
+	// TODO: add edges to Node.edges and Node.point.adjacentNodes
 
 	graph.nodes = make([]*Node, len(nodes))
 	graph.edges = make([]*Edge, len(edges))
@@ -57,21 +61,35 @@ func NewGraph(model models.Graph) *Graph {
 	return &graph
 }
 
-func (g *Graph) GetModel() models.Graph {
-	nodes := make([]models.Node, len(g.nodes))
-	for i, node := range g.nodes {
-		nodes[i] = node.GetModel()
+func DeleteNode(node *Node) {
+	// TODO: delete node and all its edges
+}
+
+func DeleteEdge(edge *Edge) {
+	// TODO: delete edge
+}
+
+func (graph *Graph) GetModel() *models.Graph {
+	nodes := make([]*models.Node, len(graph.nodes))
+	for i, node := range graph.nodes {
+		nodes[i] = node.model()
 	}
 
-	edges := make([]models.Edge, len(g.edges))
-	for i, edge := range g.edges {
+	edges := make([]*models.Edge, len(graph.edges))
+	for i, edge := range graph.edges {
 		edges[i] = edge.GetModel()
 	}
-	return models.Graph{
-		Id:          g.id,
-		Name:        g.content.Name(),
-		Description: g.content.Description(),
-		Nodes:       nodes,
-		Edges:       edges,
-	}
+	return models.NewGraph(
+		graph.id,
+		graph.content.Name(),
+		graph.content.Description(),
+		nodes,
+		edges,
+		gui.DefaultNode.Size(),
+		gui.DefaultNode.Color(),
+		gui.DefaultNode.Shape(),
+		gui.DefaultEdge.Width(),
+		gui.DefaultEdge.Color(),
+		gui.DefaultEdge.Shape(),
+	)
 }

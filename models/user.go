@@ -7,3 +7,19 @@ type User struct {
 	Password string  `json:"password"`
 	Graphs   []Graph `json:"graphs"`
 }
+
+func NewUser(
+	id int,
+	login string,
+	email string,
+	password string,
+	graphs []Graph,
+) *User {
+	return &User{
+		Id:       id,
+		Login:    login,
+		Email:    email,
+		Password: password,
+		Graphs:   graphs,
+	}
+}

@@ -11,32 +11,43 @@ import (
 type Node struct {
 	id      int
 	edges   []*Edge
-	content content.Node
-	point   physics.Node
-	node    gui.Node
+	content *content.Node
+	point   *physics.Node
+	node    *gui.Node
 }
 
-func NewNode(model *models.Node) *Node {
+func newNode(model *models.Node) *Node {
 	return &Node{
 		id: model.Id,
-
-		content: *content.NewNode(
+		content: content.NewNode(
 			model.Name,
 			model.Data,
 		),
-		point: *physics.NewNode(),
-		node:  gui.Node{},
+		point: physics.NewNode(),
+		node:  gui.NewNode(model.Size, model.Color, model.Shape),
 	}
 }
 
-func (n *Node) GetModel() models.Node {
-	return models.Node{
-		Id:    n.id,
-		Name:  n.content.Name(),
-		Data:  n.content.Data(),
-		Size:  n.node.Size(),
-		Color: n.node.Color(),
-		Shape: n.node.Shape(),
+func (node *Node) addEdges(adjacentNodes []*Node) {
+	adjacentPoints := make([]*physics.Node, len(adjacentNodes))
+	for i, adjacentNode := range adjacentNodes {
+		if adjacentNode == node {
+			adjacentPoints[i] = adjacentNode.point
+		} else {
+			adjacentPoints[i] = adjacentNode.point
+		}
+	}
+	node.point.AddAdjacentNodes(adjacentPoints)
+}
+
+func (node *Node) model() *models.Node {
+	return &models.Node{
+		Id:    node.id,
+		Name:  node.content.Name(),
+		Data:  node.content.Data(),
+		Size:  node.node.Size(),
+		Color: node.node.Color(),
+		Shape: node.node.Shape(),
 	}
 }
 
@@ -44,34 +55,34 @@ func (*Node) Draw() {
 	panic("not implemented exception")
 }
 
-func (n *Node) Update(c chan struct{}, nodes *[]physics.Node, graph *physics.Graph) {
-	n.point.Update(c, nodes, graph)
+func (node *Node) Update(c chan struct{}, nodes *[]*physics.Node, graph *physics.Graph) {
+	node.point.Update(c, nodes, graph)
 }
 
-func (n *Node) Move(time float64) {
-	n.point.Move(time)
+func (node *Node) Move(time float64) {
+	node.point.Move(time)
 }
 
-func (n *Node) SetNodeId(id int) {
-	n.id = id
+func (node *Node) SetNodeId(id int) {
+	node.id = id
 }
 
-func (n *Node) SetNodeName(name string) {
-	n.content.SetName(name)
+func (node *Node) SetNodeName(name string) {
+	node.content.SetName(name)
 }
 
-func (n *Node) SetNodeData(data []byte) {
-	n.content.SetData(data)
+func (node *Node) SetNodeData(data []byte) {
+	node.content.SetData(data)
 }
 
-func (n *Node) SetNodeColor(color color.Color) {
-	n.node.SetColor(color)
+func (node *Node) SetNodeColor(color color.Color) {
+	node.node.SetColor(color)
 }
 
-func (n *Node) SetNodeShape(shape models.NodeShape) {
-	n.node.SetShape(shape)
+func (node *Node) SetNodeShape(shape models.NodeShape) {
+	node.node.SetShape(shape)
 }
 
-func (n *Node) SetNodeSize(size float32) {
-	n.node.SetSize(size)
+func (node *Node) SetNodeSize(size float32) {
+	node.node.SetSize(size)
 }

@@ -21,6 +21,26 @@ type Node struct {
 	Shape NodeShape
 }
 
+func NewNode(
+	id int,
+	edges []int,
+	name string,
+	data []byte,
+	size float32,
+	color color.Color,
+	shape NodeShape,
+) *Node {
+	return &Node{
+		Id:    id,
+		Edges: edges,
+		Name:  name,
+		Data:  data,
+		Size:  size,
+		Color: color,
+		Shape: shape,
+	}
+}
+
 // This seems to be VERY deprecated code. These functions were all moved to responsibilities of a database
 /*
 func (node *Node) Insert(db *sql.DB, color color.Color, shape gui.NodeShape, size float32) {

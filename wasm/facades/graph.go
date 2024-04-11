@@ -42,10 +42,18 @@ func LoadGraph(model models.Graph) *Graph {
 	}
 
 	for _, edge := range model.Edges {
-		edges[edge.Id] = newEdge(edge, nodes[edge.Begin], nodes[edge.End])
-	}
+		begin := nodes[edge.Begin]
+		end := nodes[edge.End]
+		facade := newEdge(edge, begin, end)
 
-	// TODO: add edges to Node.edges and Node.point.adjacentNodes
+		edges[edge.Id] = facade
+
+		begin.edges = append(begin.edges, facade)
+		begin.point.AddAdjacentNode(end.point)
+
+		end.edges = append(end.edges, facade)
+		end.point.AddAdjacentNode(begin.point)
+	}
 
 	graph.nodes = make([]*Node, len(nodes))
 	graph.edges = make([]*Edge, len(edges))
@@ -61,12 +69,41 @@ func LoadGraph(model models.Graph) *Graph {
 	return &graph
 }
 
-func DeleteNode(node *Node) {
-	// TODO: delete node and all its edges
+func (graph *Graph) DeleteNode(node *Node) {
+	// delete actual node
+	for i, n := range graph.nodes {
+		if n.id == node.id {
+			graph.nodes = append(graph.nodes[:i], graph.nodes[i+1:]...)
+		}
+	}
+
+	// delete edges from deleted node
+
+	remainingEdges := make([]*Edge, 0)
+	// chose what edges to keep
+	for _, e := range graph.edges {
+		if e.begin.id == node.id {
+			// remove the edge from another side
+			e.end.removeEdge(e)
+		} else if e.end.id == node.id {
+			e.begin.removeEdge(e)
+		} else {
+			remainingEdges = append(remainingEdges, e)
+		}
+
+	}
+	graph.edges = remainingEdges
 }
 
-func DeleteEdge(edge *Edge) {
-	// TODO: delete edge
+func (graph *Graph) DeleteEdge(edge *Edge) {
+	for i, e := range graph.edges {
+		if e.id == edge.id {
+			e.begin.removeEdge(e)
+			e.end.removeEdge(e)
+			graph.edges = append(graph.edges[:i], graph.edges[i+1:]...)
+			break
+		}
+	}
 }
 
 func (graph *Graph) GetModel() *models.Graph {

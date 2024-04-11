@@ -28,16 +28,33 @@ func newNode(model *models.Node) *Node {
 	}
 }
 
-func (node *Node) addEdges(adjacentNodes []*Node) {
-	adjacentPoints := make([]*physics.Node, len(adjacentNodes))
-	for i, adjacentNode := range adjacentNodes {
-		if adjacentNode == node {
-			adjacentPoints[i] = adjacentNode.point
-		} else {
-			adjacentPoints[i] = adjacentNode.point
+func (node *Node) addEdge(edge *Edge) {
+	flag := true
+	for _, e := range node.edges {
+		if e.id == edge.id {
+			flag = false
 		}
 	}
-	node.point.AddAdjacentNodes(adjacentPoints)
+	if flag {
+		node.edges = append(node.edges, edge)
+	}
+
+	if node.id == edge.begin.id {
+		node.point.AddAdjacentNode(edge.end.point)
+	}
+}
+
+func (node *Node) removeEdge(edge *Edge) {
+	for i, e := range node.edges {
+		if e.id == edge.id {
+			node.edges = append(node.edges[:i], node.edges[i+1:]...)
+			break
+		}
+	}
+
+	if node.id == edge.begin.id {
+		node.point.RemoveAdjacentNode(edge.end.point)
+	}
 }
 
 func (node *Node) model() *models.Node {

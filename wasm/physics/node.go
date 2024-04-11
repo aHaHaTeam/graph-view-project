@@ -17,8 +17,17 @@ func NewNode() *Node {
 	}
 }
 
-func (node *Node) AddAdjacentNodes(adjacentNodes []*Node) {
-	node.adjacentNodes = append(node.adjacentNodes, adjacentNodes...)
+func (node *Node) AddAdjacentNode(adjacentNode *Node) {
+	node.adjacentNodes = append(node.adjacentNodes, adjacentNode)
+}
+
+func (node *Node) RemoveAdjacentNode(adjacentNode *Node) {
+	for i, n := range node.adjacentNodes {
+		if n == adjacentNode {
+			node.adjacentNodes = append(node.adjacentNodes[:i], node.adjacentNodes[i+1:]...)
+			break
+		}
+	}
 }
 
 func (node *Node) Update(c chan struct{}, nodes *[]*Node, graph *Graph) {

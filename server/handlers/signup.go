@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	"encoding/json"
@@ -12,9 +12,9 @@ import (
 func Signup(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		decoder := json.NewDecoder(r.Body)
-		var user models.User
+		var user *models.User
 
-		if err := decoder.Decode(&user); err != nil {
+		if err := decoder.Decode(user); err != nil {
 			w.Header().Add("success", "Invalid username or password")
 			log.Println(err)
 			return
@@ -29,7 +29,7 @@ func Signup(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 			return
 		}
 
-		err = (*db).CreateUser(user)
+		user, err = (*db).CreateUser(*user)
 
 		if err != nil {
 			w.Header().Add("success", "User with this username already exists")

@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	"graph-view-project/server/utils"

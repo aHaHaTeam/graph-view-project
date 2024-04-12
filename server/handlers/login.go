@@ -1,4 +1,4 @@
-package controllers
+package handlers
 
 import (
 	"encoding/json"
@@ -24,7 +24,7 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 		}
 		var existingUser *models.User
 
-		existingUser, err := (*db).GetUserByLogin(user.Login)
+		existingUser, err := (*db).GetUser(user.Id)
 
 		if err != nil {
 			w.Header().Add("success", "Invalid login or password")
@@ -43,9 +43,8 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 		expirationTime := time.Now().Add(5 * time.Minute)
 
 		claims := &models.Claims{
-			UserId: 3, //existingUser.Id,
+			UserId: existingUser.Id,
 			StandardClaims: jwt.StandardClaims{
-				Subject:   existingUser.Login,
 				ExpiresAt: expirationTime.Unix(),
 			},
 		}

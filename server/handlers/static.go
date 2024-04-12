@@ -1,6 +1,8 @@
-package controllers
+package handlers
 
-import "net/http"
+import (
+	"net/http"
+)
 
 func LoginGet(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "./client/static/login.html")

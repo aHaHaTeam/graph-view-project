@@ -3,10 +3,11 @@ package database
 import (
 	"database/sql"
 	"fmt"
-	"github.com/joho/godotenv"
 	"graph-view-project/models"
 	"log"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 type PostgresDB struct {
@@ -40,13 +41,13 @@ func (db *PostgresDB) Disconnect() error {
 	return err
 }
 
-func (db *PostgresDB) CreateUser(user models.User) error {
+func (db *PostgresDB) CreateUser(user models.User) (*models.User, error) {
 	query := `INSERT INTO users (login, email, password) VALUES ($1, $2, $3)`
 	err := db.Connection.QueryRow(query, user.Login, user.Email, user.Password).Err()
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	return nil, nil
 }
 
 func (db *PostgresDB) GetUserByLogin(login string) (*models.User, error) {
@@ -59,38 +60,48 @@ func (db *PostgresDB) GetUserByLogin(login string) (*models.User, error) {
 	return &models.User{Id: 0, Login: login, Email: email, Password: password}, nil
 }
 
-func (db *PostgresDB) CreateGraph(user models.User, graph models.Graph) error {
-	return error(nil)
-}
-func (db *PostgresDB) CreateNode(graph models.Graph, node models.Node) error {
-	return error(nil)
-}
-func (db *PostgresDB) CreateEdge(graph models.Graph, edge models.Edge) error {
-	return error(nil)
+func (db *PostgresDB) GetUser(id int) (*models.User, error) {
+	query := `SELECT * FROM users WHERE id = $1`
+	var login, email, password string
+	err := db.Connection.QueryRow(query, id).Scan(login, email, password)
+	if err != nil {
+		return nil, err
+	}
+	return &models.User{Id: id, Login: login, Email: email, Password: password}, nil
 }
 
-func (db *PostgresDB) GetGraphById(id int) (*models.Graph, error) {
+func (db *PostgresDB) CreateGraph(user models.User, graph models.Graph) (*models.Graph, error) {
+	return nil, nil
+}
+func (db *PostgresDB) CreateNode(graph models.Graph, node models.Node) (*models.Node, error) {
+	return nil, nil
+}
+func (db *PostgresDB) CreateEdge(graph models.Graph, edge models.Edge) (*models.Edge, error) {
+	return nil, nil
+}
+
+func (db *PostgresDB) GetGraph(id int) (*models.Graph, error) {
 	return nil, error(nil)
 }
-func (db *PostgresDB) GetEdgeById(id int) (*models.Edge, error) {
+func (db *PostgresDB) GetEdge(id int) (*models.Edge, error) {
 	return nil, error(nil)
 }
-func (db *PostgresDB) GetNodeById(id int) (*models.Node, error) {
+func (db *PostgresDB) GetNode(id int) (*models.Node, error) {
 	return nil, error(nil)
 }
 
-func (db *PostgresDB) UpdateUserByLogin(newUser models.User) error {
+func (db *PostgresDB) UpdateUser(newUser models.User) error {
 	return error(nil)
 }
 
-func (db *PostgresDB) UpdateGraphById(id int, newGraph models.Graph) error {
+func (db *PostgresDB) UpdateGraph(newGraph models.Graph) error {
 	return error(nil)
 }
 
-func (db *PostgresDB) UpdateEdgeById(id int, newEdge models.Edge) error {
+func (db *PostgresDB) UpdateEdge(newEdge models.Edge) error {
 	return error(nil)
 }
 
-func (db *PostgresDB) UpdateNodeById(id int, newNode models.Node) error {
+func (db *PostgresDB) UpdateNode(newNode models.Node) error {
 	return error(nil)
 }

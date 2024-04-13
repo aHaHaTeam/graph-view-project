@@ -44,8 +44,8 @@ func (db *MockDB) CreateUser(user models.User) (*models.User, error) {
 	user.Id = len(db.graphs)
 	db.users[user.Id] = &user
 	err := db.UpdateUser(user)
-	newGraph := user
-	return &newGraph, err
+	newUser := user
+	return &newUser, err
 }
 
 func (db *MockDB) CreateGraph(user models.User, graph models.Graph) (*models.Graph, error) {

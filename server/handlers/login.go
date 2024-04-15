@@ -1,9 +1,9 @@
-package controllers
+package handlers
 
 import (
 	"encoding/json"
 	"graph-view-project/database"
-	"graph-view-project/server/models"
+	"graph-view-project/models"
 	"graph-view-project/server/utils"
 	"log"
 	"net/http"
@@ -19,15 +19,17 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 
 		if err := decoder.Decode(&user); err != nil {
 			w.Header().Add("success", "Invalid login or password")
-			log.Println(err)
+			w.WriteHeader(http.StatusUnauthorized)
+			log.Println("Decode error", err)
 			return
 		}
-		var existingUser models.User
+		var existingUser *models.User
 
 		existingUser, err := (*db).GetUserByLogin(user.Login)
 
 		if err != nil {
 			w.Header().Add("success", "Invalid login or password")
+			w.WriteHeader(http.StatusUnauthorized)
 			log.Println(err)
 			return
 		}
@@ -36,16 +38,17 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 
 		if err != nil {
 			w.Header().Add("success", "Invalid login or password")
-			log.Println(err)
+			w.WriteHeader(http.StatusUnauthorized)
+			hash, _ := utils.GenerateHashPassword(user.Password)
+			log.Println(err, user.Login, user.Password, hash, existingUser.Password)
 			return
 		}
 
 		expirationTime := time.Now().Add(5 * time.Minute)
 
 		claims := &models.Claims{
-			UserId: 3, //existingUser.Id,
+			UserId: existingUser.Id,
 			StandardClaims: jwt.StandardClaims{
-				Subject:   existingUser.Login,
 				ExpiresAt: expirationTime.Unix(),
 			},
 		}
@@ -56,6 +59,7 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 
 		if err != nil {
 			w.Header().Add("success", "Invalid login or password")
+			w.WriteHeader(http.StatusUnauthorized)
 			log.Println(err)
 			return
 		}
@@ -72,6 +76,8 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 			HttpOnly:   true,
 		})
 
+		log.Println("User logged in")
 		w.Header().Add("success", "User logged in")
+		w.WriteHeader(http.StatusOK)
 	}
 }

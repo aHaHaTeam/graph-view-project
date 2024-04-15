@@ -34,13 +34,21 @@ loginForm.addEventListener("submit", (e) => {
                 "Content-type": "application/json; charset=UTF-8"
             }
         }).then(response => {
-            if (response.headers.get("success") === "User logged in") {
-                document.location.reload();
+            if (response.status === 200){
+                console.log(response.status)
                 document.location.replace("http://localhost:8080/")
+
+                caches.keys().then((names) => {
+                    names.forEach(async (name) => {
+                        await caches.delete(name)
+                    })
+                })
+                document.location.reload()
                 return null
             } else {
                 userPasswordLabel.innerText = response.headers.get("success")
                 userPasswordLabel.classList.add("error")
+                console.log(response.status)
                 return response
             }
         })

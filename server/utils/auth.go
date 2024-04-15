@@ -2,10 +2,9 @@ package utils
 
 import (
 	"errors"
-	"graph-view-project/server/models"
-
 	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
+	"graph-view-project/models"
 )
 
 var JWTKey []byte

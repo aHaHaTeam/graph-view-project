@@ -39,8 +39,7 @@ signUpForm.addEventListener("submit", (e) => {
                 "Content-type": "application/json; charset=UTF-8"
             }
         }).then(response => {
-            if (response.headers.get("success") === "User logged in") {
-                document.location.reload();
+            if (response.status === 200) {
                 document.location.replace("http://localhost:8080/")
                 return null
             } else {

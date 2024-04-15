@@ -36,6 +36,14 @@ func (db *MockDB) Disconnect() error {
 	return nil
 }
 
+func (db *MockDB) CompleteReset() error {
+	db.users = make(map[int]*models.User)
+	db.graphs = make(map[int]*models.Graph)
+	db.edges = make(map[int]*models.Edge)
+	db.nodes = make(map[int]*models.Node)
+	return nil
+}
+
 func (db *MockDB) CreateUser(user models.User) (*models.User, error) {
 	if _, err := db.GetUserByLogin(user.Login); err == nil {
 		return nil, errors.New("user already exists")

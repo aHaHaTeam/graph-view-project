@@ -44,6 +44,73 @@ func (db *PostgresDB) Disconnect() error {
 	return err
 }
 
+func (db *PostgresDB) CompleteReset() error {
+	_, err := db.Connection.Exec(`CREATE TABLE IF NOT EXISTS users
+(
+    id       SERIAL PRIMARY KEY,
+    login    VARCHAR(239),
+    email    VARCHAR(239),
+    password VARCHAR(239),
+    graphs   integer[]
+);
+
+CREATE TABLE IF NOT EXISTS graphs
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(239),
+    description VARCHAR(239),
+    nodes       INTEGER[],
+    edges       INTEGER[],
+
+    defaultNodeSize  FLOAT DEFAULT 1,
+    DefaultNodeColor INTEGER DEFAULT 0,
+    DefaultNodeShape INTEGER DEFAULT 0,
+
+    DefaultEdgeWidth FLOAT DEFAULT 1,
+    DefaultEdgeColor INTEGER DEFAULT 0,
+    DefaultEdgeShape INTEGER DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS nodes
+(
+    id    SERIAL PRIMARY KEY,
+    edges INTEGER[],
+
+    name  VARCHAR(239),
+    data  bytea,
+    size  FLOAT DEFAULT 1,
+    color INTEGER DEFAULT 0,
+    shape INTEGER DEFAULT 0
+
+);
+
+CREATE TABLE IF NOT EXISTS edges
+(
+    id          SERIAL PRIMARY KEY,
+    begin       INTEGER,
+    "end"       INTEGER,
+
+    name        VARCHAR(239) DEFAULT 'not specified',
+    description VARCHAR(239) DEFAULT 'not null',
+
+    width       FLOAT DEFAULT 1.0,
+    color       INTEGER DEFAULT 0,
+    shape       INTEGER DEFAULT 0
+);
+
+DELETE FROM users where id < 10;
+DELETE FROM graphs where id < 30;
+DELETE FROM nodes where id < 10;
+DELETE FROM edges where id < 10;
+
+TRUNCATE TABLE users RESTART IDENTITY;
+TRUNCATE TABLE graphs RESTART IDENTITY;
+TRUNCATE TABLE nodes RESTART IDENTITY;
+TRUNCATE TABLE edges RESTART IDENTITY;`)
+
+	return err
+}
+
 func (db *PostgresDB) CreateUser(user models.User) (*models.User, error) {
 	var loginTaken bool
 	check := `Select exists (select true from users where login = $1)`

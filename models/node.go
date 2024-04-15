@@ -9,6 +9,28 @@ const (
 	Square
 )
 
+func NodeShapeFromInt(value int) NodeShape {
+	switch value {
+	case 0:
+		return Circle
+	case 1:
+		return Square
+	default:
+		return Circle
+	}
+}
+
+func NodeShapeToInt(value NodeShape) int {
+	switch value {
+	case Circle:
+		return 0
+	case Square:
+		return 1
+	default:
+		return 0
+	}
+}
+
 type Node struct {
 	Id    int
 	Edges []int

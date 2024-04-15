@@ -9,6 +9,28 @@ const (
 	Line
 )
 
+func EdgeShapeFromInt(value int) EdgeShape {
+	switch value {
+	case 0:
+		return Arrow
+	case 1:
+		return Line
+	default:
+		return Arrow
+	}
+}
+
+func EdgeShapeToInt(value EdgeShape) int {
+	switch value {
+	case Arrow:
+		return 0
+	case Line:
+		return 1
+	default:
+		return 0
+	}
+}
+
 type Edge struct {
 	Id    int
 	Begin int

@@ -8,11 +8,11 @@ import (
 
 type Edge struct {
 	width float32
-	color color.Color
+	color color.RGBA
 	shape models.EdgeShape
 }
 
-func NewEdge(width float32, color color.Color, shape models.EdgeShape) *Edge {
+func NewEdge(width float32, color color.RGBA, shape models.EdgeShape) *Edge {
 	return &Edge{width: width, color: color, shape: shape}
 }
 
@@ -28,11 +28,11 @@ func (edge *Edge) SetWidth(width float32) {
 	edge.width = width
 }
 
-func (edge *Edge) Color() color.Color {
+func (edge *Edge) Color() color.RGBA {
 	return edge.color
 }
 
-func (edge *Edge) SetColor(color color.Color) {
+func (edge *Edge) SetColor(color color.RGBA) {
 	edge.color = color
 }
 

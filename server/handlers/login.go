@@ -19,15 +19,17 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 
 		if err := decoder.Decode(&user); err != nil {
 			w.Header().Add("success", "Invalid login or password")
-			log.Println(err)
+			w.WriteHeader(http.StatusUnauthorized)
+			log.Println("Decode error", err)
 			return
 		}
 		var existingUser *models.User
 
-		existingUser, err := (*db).GetUser(user.Id)
+		existingUser, err := (*db).GetUserByLogin(user.Login)
 
 		if err != nil {
 			w.Header().Add("success", "Invalid login or password")
+			w.WriteHeader(http.StatusUnauthorized)
 			log.Println(err)
 			return
 		}
@@ -36,7 +38,9 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 
 		if err != nil {
 			w.Header().Add("success", "Invalid login or password")
-			log.Println(err)
+			w.WriteHeader(http.StatusUnauthorized)
+			hash, _ := utils.GenerateHashPassword(user.Password)
+			log.Println(err, user.Login, user.Password, hash, existingUser.Password)
 			return
 		}
 
@@ -55,6 +59,7 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 
 		if err != nil {
 			w.Header().Add("success", "Invalid login or password")
+			w.WriteHeader(http.StatusUnauthorized)
 			log.Println(err)
 			return
 		}
@@ -71,6 +76,8 @@ func Login(db *database.DataBase) func(http.ResponseWriter, *http.Request) {
 			HttpOnly:   true,
 		})
 
+		log.Println("User logged in")
 		w.Header().Add("success", "User logged in")
+		w.WriteHeader(http.StatusOK)
 	}
 }

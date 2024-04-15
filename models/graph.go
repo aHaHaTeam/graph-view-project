@@ -3,21 +3,21 @@ package models
 import "image/color"
 
 type Graph struct {
-	Id          int
-	Name        string
-	Description string
-	Nodes       []*Node
-	Edges       []*Edge
+	Id          int     `json:"id"`
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	Nodes       []*Node `json:"nodes"`
+	Edges       []*Edge ` json:"edges"`
 
 	// Default gui.Node parameters
-	DefaultNodeSize  float32
-	DefaultNodeColor color.Color
-	DefaultNodeShape NodeShape
+	DefaultNodeSize  float32    `json:"defaultNodeSize"`
+	DefaultNodeColor color.RGBA `json:"defaultNodeColor"`
+	DefaultNodeShape NodeShape  `json:"defaultNodeShape"`
 
 	// Default gui.Edge parameters
-	DefaultEdgeWidth float32
-	DefaultEdgeColor color.Color
-	DefaultEdgeShape EdgeShape
+	DefaultEdgeWidth float32    `json:"defaultEdgeWidth"`
+	DefaultEdgeColor color.RGBA `json:"defaultEdgeColor"`
+	DefaultEdgeShape EdgeShape  `json:"defaultEdgeShape"`
 }
 
 func NewGraph(id int,
@@ -26,10 +26,10 @@ func NewGraph(id int,
 	nodes []*Node,
 	edges []*Edge,
 	defaultNodeSize float32,
-	defaultNodeColor color.Color,
+	defaultNodeColor color.RGBA,
 	defaultNodeShape NodeShape,
 	defaultEdgeWidth float32,
-	defaultEdgeColor color.Color,
+	defaultEdgeColor color.RGBA,
 	defaultEdgeShape EdgeShape,
 ) *Graph {
 	return &Graph{

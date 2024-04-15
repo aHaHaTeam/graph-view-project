@@ -7,11 +7,11 @@ import (
 
 type Node struct {
 	size  float32
-	color color.Color
+	color color.RGBA
 	shape models.NodeShape
 }
 
-func NewNode(size float32, color color.Color, shape models.NodeShape) *Node {
+func NewNode(size float32, color color.RGBA, shape models.NodeShape) *Node {
 	return &Node{size: size, color: color, shape: shape}
 }
 
@@ -27,11 +27,11 @@ func (node *Node) SetSize(size float32) {
 	node.size = size
 }
 
-func (node *Node) Color() color.Color {
+func (node *Node) Color() color.RGBA {
 	return node.color
 }
 
-func (node *Node) SetColor(color color.Color) {
+func (node *Node) SetColor(color color.RGBA) {
 	node.color = color
 }
 

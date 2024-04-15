@@ -92,7 +92,7 @@ func (node *Node) SetNodeData(data []byte) {
 	node.content.SetData(data)
 }
 
-func (node *Node) SetNodeColor(color color.Color) {
+func (node *Node) SetNodeColor(color color.RGBA) {
 	node.node.SetColor(color)
 }
 

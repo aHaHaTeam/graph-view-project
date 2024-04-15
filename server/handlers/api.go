@@ -11,7 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type createUserRequestBody struct {
+type CreateUserRequestBody struct {
 	User models.User `json:"user"`
 }
 
@@ -19,10 +19,11 @@ func CreateUser(db *database.DataBase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		dec := json.NewDecoder(r.Body)
 		dec.DisallowUnknownFields()
-		var body createUserRequestBody
+		var body CreateUserRequestBody
 		err := dec.Decode(&body)
 
 		if err != nil {
+			log.Printf("Couldn't unmarshal a user interface. error: %s\n", err)
 			respondWithUnmarshallError(w, err)
 			return
 		}
@@ -37,7 +38,7 @@ func CreateUser(db *database.DataBase) http.HandlerFunc {
 	}
 }
 
-type createGraphRequestBody struct {
+type CreateGraphRequestBody struct {
 	User  models.User  `json:"user"`
 	Graph models.Graph `json:"graph"`
 }
@@ -46,7 +47,7 @@ func CreateGraph(db *database.DataBase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		dec := json.NewDecoder(r.Body)
 		dec.DisallowUnknownFields()
-		var body createGraphRequestBody
+		var body CreateGraphRequestBody
 		err := dec.Decode(&body)
 
 		if err != nil {
@@ -64,7 +65,7 @@ func CreateGraph(db *database.DataBase) http.HandlerFunc {
 	}
 }
 
-type createNodeRequestBody struct {
+type CreateNodeRequestBody struct {
 	Graph models.Graph `json:"graph"`
 	Node  models.Node  `json:"node"`
 }
@@ -73,7 +74,7 @@ func CreateNode(db *database.DataBase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		dec := json.NewDecoder(r.Body)
 		dec.DisallowUnknownFields()
-		var body createNodeRequestBody
+		var body CreateNodeRequestBody
 		err := dec.Decode(&body)
 
 		if err != nil {
@@ -91,7 +92,7 @@ func CreateNode(db *database.DataBase) http.HandlerFunc {
 	}
 }
 
-type createEdgeRequestBody struct {
+type CreateEdgeRequestBody struct {
 	Graph models.Graph `json:"graph"`
 	Edge  models.Edge  `json:"edge"`
 }
@@ -100,7 +101,7 @@ func CreateEdge(db *database.DataBase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		dec := json.NewDecoder(r.Body)
 		dec.DisallowUnknownFields()
-		var body createEdgeRequestBody
+		var body CreateEdgeRequestBody
 		err := dec.Decode(&body)
 
 		if err != nil {
@@ -120,6 +121,7 @@ func CreateEdge(db *database.DataBase) http.HandlerFunc {
 
 func GetUser(db *database.DataBase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		log.Println("GetUser")
 		vars := mux.Vars(r)
 		id, err := strconv.Atoi(vars["id"])
 		if err != nil {
@@ -194,7 +196,7 @@ func GetNode(db *database.DataBase) http.HandlerFunc {
 	}
 }
 
-type updateUserRequestBody struct {
+type UpdateUserRequestBody struct {
 	User models.User `json:"user"`
 }
 
@@ -202,7 +204,7 @@ func UpdateUser(db *database.DataBase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		dec := json.NewDecoder(r.Body)
 		dec.DisallowUnknownFields()
-		var body updateUserRequestBody
+		var body UpdateUserRequestBody
 		err := dec.Decode(&body)
 
 		if err != nil {
@@ -219,7 +221,7 @@ func UpdateUser(db *database.DataBase) http.HandlerFunc {
 	}
 }
 
-type updateGraphRequestBody struct {
+type UpdateGraphRequestBody struct {
 	Graph models.Graph `json:"graph"`
 }
 
@@ -227,7 +229,7 @@ func UpdateGraph(db *database.DataBase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		dec := json.NewDecoder(r.Body)
 		dec.DisallowUnknownFields()
-		var body updateGraphRequestBody
+		var body UpdateGraphRequestBody
 		err := dec.Decode(&body)
 
 		if err != nil {
@@ -244,7 +246,7 @@ func UpdateGraph(db *database.DataBase) http.HandlerFunc {
 	}
 }
 
-type updateEdgeRequestBody struct {
+type UpdateEdgeRequestBody struct {
 	Edge models.Edge `json:"edge"`
 }
 
@@ -252,7 +254,7 @@ func UpdateEdge(db *database.DataBase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		dec := json.NewDecoder(r.Body)
 		dec.DisallowUnknownFields()
-		var body updateEdgeRequestBody
+		var body UpdateEdgeRequestBody
 		err := dec.Decode(&body)
 
 		if err != nil {
@@ -269,7 +271,7 @@ func UpdateEdge(db *database.DataBase) http.HandlerFunc {
 	}
 }
 
-type updateNodeRequestBody struct {
+type UpdateNodeRequestBody struct {
 	Node models.Node `json:"node"`
 }
 
@@ -277,7 +279,7 @@ func UpdateNode(db *database.DataBase) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		dec := json.NewDecoder(r.Body)
 		dec.DisallowUnknownFields()
-		var body updateNodeRequestBody
+		var body UpdateNodeRequestBody
 		err := dec.Decode(&body)
 
 		if err != nil {

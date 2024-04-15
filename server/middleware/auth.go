@@ -14,7 +14,7 @@ func AuthUser(next http.HandlerFunc) http.HandlerFunc {
 
 		if err != nil {
 			handlers.LoginGet(w, r)
-			log.Println(err)
+			log.Println("[Unable to get cookie]", err, r.Cookies())
 			return
 		}
 

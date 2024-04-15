@@ -49,7 +49,7 @@ func (db *MockDB) CreateUser(user models.User) (*models.User, error) {
 		return nil, errors.New("user already exists")
 	}
 
-	user.Id = len(db.graphs) + 1
+	user.Id = len(db.users) + 1
 	db.users[user.Id] = &user
 	err := db.UpdateUser(user)
 	newUser := user

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -30,16 +31,19 @@ func respondWithUnmarshallError(w http.ResponseWriter, err error) {
 	switch {
 	// Catch any syntax errors.
 	case errors.As(err, &syntaxError):
+		log.Printf("Request body contains badly-formed JSON (at position %d)\n", syntaxError.Offset)
 		msg := fmt.Sprintf("Request body contains badly-formed JSON (at position %d)", syntaxError.Offset)
 		http.Error(w, msg, http.StatusBadRequest)
 
 	// Catch any type errors.
 	case errors.As(err, &unmarshalTypeError):
+		log.Printf("Request body contains an invalid value for the %q field (at position %d)\n", unmarshalTypeError.Field, unmarshalTypeError.Offset)
 		msg := fmt.Sprintf("Request body contains an invalid value for the %q field (at position %d)", unmarshalTypeError.Field, unmarshalTypeError.Offset)
 		http.Error(w, msg, http.StatusBadRequest)
 
 	// An io.EOF error is returned by Decode() if the request body is empty.
 	case errors.Is(err, io.EOF):
+		log.Println("Request body must not be empty")
 		msg := "Request body must not be empty"
 		http.Error(w, msg, http.StatusBadRequest)
 

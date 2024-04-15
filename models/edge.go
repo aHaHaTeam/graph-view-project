@@ -32,16 +32,16 @@ func EdgeShapeToInt(value EdgeShape) int {
 }
 
 type Edge struct {
-	Id    int
-	Begin int
-	End   int
+	Id    int `json:"id"`
+	Begin int `json:"begin"`
+	End   int `json:"end"`
 
-	Name        string
-	Description string
+	Name        string `json:"name"`
+	Description string `json:"description"`
 
-	Width float32
-	Color color.Color
-	Shape EdgeShape
+	Width float32    `json:"width"`
+	Color color.RGBA `json:"color"`
+	Shape EdgeShape  `json:"shape"`
 }
 
 func NewEdge(
@@ -51,7 +51,7 @@ func NewEdge(
 	name string,
 	description string,
 	width float32,
-	color color.Color,
+	color color.RGBA,
 	shape EdgeShape,
 ) *Edge {
 	return &Edge{

@@ -21,10 +21,10 @@ func (db *MockDB) Connect(databaseName string) error {
 	db.nodes = make(map[int]*models.Node)
 
 	hash, _ := utils.GenerateHashPassword("password")
-	_, _ = db.CreateUser(models.User{Login: "user", Email: "user@user", Password: hash, Graphs: make([]models.Graph, 0)})
+	_, _ = db.CreateUser(models.User{Login: "user", Email: "user@user", Password: hash, Graphs: make([]*models.Graph, 0)})
 
 	hash, _ = utils.GenerateHashPassword("12345678password")
-	_, _ = db.CreateUser(models.User{Login: "12345", Email: "123456", Password: hash, Graphs: make([]models.Graph, 0)})
+	_, _ = db.CreateUser(models.User{Login: "12345", Email: "123456", Password: hash, Graphs: make([]*models.Graph, 0)})
 	return nil
 }
 
@@ -49,7 +49,7 @@ func (db *MockDB) CreateUser(user models.User) (*models.User, error) {
 		return nil, errors.New("user already exists")
 	}
 
-	user.Id = len(db.graphs)
+	user.Id = len(db.graphs) + 1
 	db.users[user.Id] = &user
 	err := db.UpdateUser(user)
 	newUser := user
@@ -57,7 +57,7 @@ func (db *MockDB) CreateUser(user models.User) (*models.User, error) {
 }
 
 func (db *MockDB) CreateGraph(user models.User, graph models.Graph) (*models.Graph, error) {
-	graph.Id = len(db.graphs)
+	graph.Id = len(db.graphs) + 1
 	db.graphs[graph.Id] = &graph
 	err := db.UpdateUser(user)
 	newGraph := graph
@@ -65,7 +65,7 @@ func (db *MockDB) CreateGraph(user models.User, graph models.Graph) (*models.Gra
 }
 
 func (db *MockDB) CreateNode(graph models.Graph, node models.Node) (*models.Node, error) {
-	node.Id = len(db.nodes)
+	node.Id = len(db.nodes) + 1
 	db.nodes[node.Id] = &node
 	err := db.UpdateGraph(graph)
 	newNode := node
@@ -73,7 +73,7 @@ func (db *MockDB) CreateNode(graph models.Graph, node models.Node) (*models.Node
 }
 
 func (db *MockDB) CreateEdge(graph models.Graph, edge models.Edge) (*models.Edge, error) {
-	edge.Id = len(db.edges)
+	edge.Id = len(db.edges) + 1
 	db.edges[edge.Id] = &edge
 	err := db.UpdateGraph(graph)
 	newEdge := edge
@@ -81,11 +81,12 @@ func (db *MockDB) CreateEdge(graph models.Graph, edge models.Edge) (*models.Edge
 }
 
 func (db *MockDB) GetUser(id int) (*models.User, error) {
-	if len(db.users) <= id {
+	user, ok := db.users[id]
+	if !ok {
 		return nil, errors.New("user does not exist")
 	}
 
-	return db.users[id], nil
+	return user, nil
 }
 
 func (db *MockDB) GetUserByLogin(login string) (*models.User, error) {
@@ -99,16 +100,17 @@ func (db *MockDB) GetUserByLogin(login string) (*models.User, error) {
 }
 
 func (db *MockDB) GetGraph(id int) (*models.Graph, error) {
-	if len(db.graphs) <= id {
+	graph, ok := db.graphs[id]
+	if !ok {
 		return nil, errors.New("graph does not exist")
 	}
 
-	return db.graphs[id], nil
+	return graph, nil
 }
 func (db *MockDB) GetEdge(id int) (*models.Edge, error) {
 	edge, ok := db.edges[id]
 	if !ok {
-		return nil, errors.New("graph does not exist")
+		return nil, errors.New("edge does not exist")
 	}
 
 	return edge, nil

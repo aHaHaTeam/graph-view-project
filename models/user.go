@@ -1,11 +1,11 @@
 package models
 
 type User struct {
-	Id       int     `json:"id"`
-	Login    string  `json:"login"`
-	Email    string  `json:"email"`
-	Password string  `json:"password"`
-	Graphs   []Graph `json:"graphs"`
+	Id       int      `json:"id"`
+	Login    string   `json:"login"`
+	Email    string   `json:"email"`
+	Password string   `json:"password"`
+	Graphs   []*Graph `json:"graphs"`
 }
 
 func NewUser(
@@ -13,7 +13,7 @@ func NewUser(
 	login string,
 	email string,
 	password string,
-	graphs []Graph,
+	graphs []*Graph,
 ) *User {
 	return &User{
 		Id:       id,

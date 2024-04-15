@@ -131,23 +131,42 @@ func (db *PostgresDB) CreateUser(user models.User) (*models.User, error) {
 }
 
 func (db *PostgresDB) GetUserByLogin(login string) (*models.User, error) {
-	query := `SELECT 1 FROM users WHERE login = $1`
+	query := `SELECT id, login, email, password, graphs FROM users WHERE login = $1`
 	var email, password string
-	err := db.Connection.QueryRow(query, login).Scan(email, password)
+	var id int
+	var graphIds pq.Int64Array
+	err := db.Connection.QueryRow(query, login).Scan(&id, &login, &email, &password, &graphIds)
+
+	graphs := make([]*models.Graph, len(graphIds))
+	for i, gId := range graphIds {
+		graphs[i], err = db.GetGraph(int(gId))
+		if err != nil {
+			return nil, err
+		}
+	}
 	if err != nil {
 		return nil, err
 	}
-	return &models.User{Id: 0, Login: login, Email: email, Password: password}, nil
+	return models.NewUser(id, login, email, password, graphs), nil
 }
 
 func (db *PostgresDB) GetUser(id int) (*models.User, error) {
-	query := `SELECT 1 FROM users WHERE id = $1`
-	var login, email, password string
-	err := db.Connection.QueryRow(query, id).Scan(login, email, password)
+	query := `SELECT id, login, email, password, graphs FROM users WHERE id = $1`
+	var email, password, login string
+	var graphIds pq.Int64Array
+	err := db.Connection.QueryRow(query, id).Scan(&id, &login, &email, &password, &graphIds)
+
+	graphs := make([]*models.Graph, len(graphIds))
+	for i, gId := range graphIds {
+		graphs[i], err = db.GetGraph(int(gId))
+		if err != nil {
+			return nil, err
+		}
+	}
 	if err != nil {
 		return nil, err
 	}
-	return &models.User{Id: id, Login: login, Email: email, Password: password}, nil
+	return models.NewUser(id, login, email, password, graphs), nil
 }
 
 func (db *PostgresDB) CreateGraph(user models.User, graph models.Graph) (*models.Graph, error) {
@@ -156,49 +175,162 @@ func (db *PostgresDB) CreateGraph(user models.User, graph models.Graph) (*models
 	if err != nil {
 		return nil, err
 	}
-	err = db.UpdateUser(user)
-	if err != nil {
+	err1 := db.UpdateUser(user)
+	err2 := db.UpdateGraph(graph)
+	if err1 != nil {
 		revert := `DELETE FROM graphs WHERE id = $1`
 		db.Connection.QueryRow(revert, graph.Id)
-		return nil, err
+		return nil, err1
+	}
+	if err2 != nil {
+		revert := `DELETE FROM graphs WHERE id = $1`
+		db.Connection.QueryRow(revert, graph.Id)
+		return nil, err2
 	}
 	return &graph, nil
 }
 func (db *PostgresDB) CreateNode(graph models.Graph, node models.Node) (*models.Node, error) {
-	return nil, nil
+	query := `INSERT INTO nodes (name, size, color, shape) VALUES ($1, $2, $3, $4) returning id`
+	err := db.Connection.QueryRow(query, node.Name, node.Size, models.ColorToInt(node.Color), models.NodeShapeToInt(node.Shape)).Scan(&node.Id)
+	if err != nil {
+		return nil, err
+	}
+	err = db.UpdateGraph(graph)
+	if err != nil {
+		revert := `DELETE FROM nodes WHERE id = $1`
+		db.Connection.QueryRow(revert, node.Id)
+		return nil, err
+	}
+	return &node, nil
 }
+
 func (db *PostgresDB) CreateEdge(graph models.Graph, edge models.Edge) (*models.Edge, error) {
-	return nil, nil
+	query := `INSERT INTO edges (begin, "end", name, description, width, color, shape) VALUES ($1, $2, $3, $4, $5, $6, $7) returning id`
+	err := db.Connection.QueryRow(query, edge.Begin, edge.End, edge.Name, edge.Description, edge.Width, models.ColorToInt(edge.Color), models.EdgeShapeToInt(edge.Shape)).Scan(&edge.Id)
+	if err != nil {
+		return nil, err
+	}
+	err = db.UpdateGraph(graph)
+	if err != nil {
+		revert := `DELETE FROM edges WHERE id = $1`
+		db.Connection.QueryRow(revert, edge.Id)
+		return nil, err
+	}
+	return &edge, nil
 }
 
 func (db *PostgresDB) GetGraph(id int) (*models.Graph, error) {
-	return nil, error(nil)
+	query := `SELECT name, description, nodes, edges, 
+       defaultnodesize, defaultnodecolor, defaultedgeshape,
+       defaultedgewidth, defaultedgecolor, defaultedgeshape
+			FROM graphs WHERE id = $1`
+	var name, description string
+	var nodeIds, edgeIds pq.Int64Array
+	var defaultNodeSize, defaultEdgeWidth float32
+	var defaultNodeColor, defaultEdgeColor int
+	var defaultNodeShape, defaultEdgeShape int
+	err := db.Connection.QueryRow(query, id).Scan(&name, &description, &nodeIds, &edgeIds,
+		&defaultNodeSize, &defaultNodeColor, &defaultNodeShape,
+		&defaultEdgeWidth, &defaultEdgeColor, &defaultEdgeShape)
+
+	nodes := make([]*models.Node, len(nodeIds))
+	edges := make([]*models.Edge, len(edgeIds))
+	for i, nId := range nodeIds {
+		nodes[i], err = db.GetNode(int(nId))
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	for i, eId := range edgeIds {
+		edges[i], err = db.GetEdge(int(eId))
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return models.NewGraph(id, name, description, nodes, edges,
+		defaultNodeSize, models.ColorFromInt(defaultNodeColor), models.NodeShapeFromInt(defaultNodeShape),
+		defaultEdgeWidth, models.ColorFromInt(defaultEdgeColor), models.EdgeShapeFromInt(defaultEdgeShape)), nil
 }
+
 func (db *PostgresDB) GetEdge(id int) (*models.Edge, error) {
-	return nil, error(nil)
+	query := `SELECT begin, "end", name, description, width, color, shape FROM edges WHERE id = $1`
+
+	var begin, end int
+	var name, description string
+	var width float32
+	var color, shape int
+	err := db.Connection.QueryRow(query, id).Scan(&begin, &end, &name, &description, &width, &color, &shape)
+	if err != nil {
+		return nil, err
+	}
+	return models.NewEdge(id, begin, end, name, description, width, models.ColorFromInt(color), models.EdgeShapeFromInt(shape)), nil
 }
+
 func (db *PostgresDB) GetNode(id int) (*models.Node, error) {
-	return nil, error(nil)
+	query := `SELECT edges, name, data, size, color, shape FROM nodes WHERE id = $1`
+
+	var name string
+	var size float32
+	var color, shape int
+	var data []byte
+	var edges []int
+	err := db.Connection.QueryRow(query, id).Scan(pq.Array(&edges), &name, pq.Array(&data), &size, &color, &shape)
+	if err != nil {
+		return nil, err
+	}
+	return models.NewNode(id, edges, name, data, size, models.ColorFromInt(color), models.NodeShapeFromInt(shape)), nil
 }
 
 func (db *PostgresDB) UpdateUser(newUser models.User) error {
-	query := `UPDATE users set login = $1, email = $2 , password = $3 , graphs = $4 WHERE id = $5`
-	graphIds := make([]int, 0)
-	for _, g := range newUser.Graphs {
-		graphIds = append(graphIds, g.Id)
+	_, err := db.GetUser(newUser.Id)
+	if err != nil {
+		return err
 	}
-	err := db.Connection.QueryRow(query, newUser.Login, newUser.Email, newUser.Password, pq.Array(graphIds), newUser.Id).Err()
+	query := `UPDATE users SET login = $1, email = $2 , password = $3 , graphs = $4 WHERE id = $5`
+
+	graphIds := make([]int, len(newUser.Graphs))
+	for i, g := range newUser.Graphs {
+		graphIds[i] = g.Id
+	}
+
+	err = db.Connection.QueryRow(query, newUser.Login, newUser.Email, newUser.Password, pq.Array(graphIds), newUser.Id).Err()
 	return err
 }
 
 func (db *PostgresDB) UpdateGraph(newGraph models.Graph) error {
-	return error(nil)
+	query := `UPDATE graphs SET name = $1, description = $2, nodes = $3, edges = $4, defaultnodesize = $5, defaultnodecolor = $6, defaultnodeshape = $7, defaultedgewidth = $8, defaultedgecolor = $9, defaultedgeshape = $10 WHERE id = $11`
+	nodeIds := make([]int, len(newGraph.Nodes))
+	for i, n := range newGraph.Nodes {
+		nodeIds[i] = n.Id
+	}
+	edgeIds := make([]int, len(newGraph.Edges))
+	for i, e := range newGraph.Edges {
+		edgeIds[i] = e.Id
+	}
+
+	err := db.Connection.QueryRow(query, newGraph.Name, newGraph.Description, pq.Array(nodeIds), pq.Array(edgeIds),
+		newGraph.DefaultNodeSize, models.ColorToInt(newGraph.DefaultNodeColor), models.NodeShapeToInt(newGraph.DefaultNodeShape),
+		newGraph.DefaultEdgeWidth, models.ColorToInt(newGraph.DefaultEdgeColor), models.EdgeShapeToInt(newGraph.DefaultEdgeShape),
+		newGraph.Id).Err()
+	return err
 }
 
 func (db *PostgresDB) UpdateEdge(newEdge models.Edge) error {
-	return error(nil)
+	query := `UPDATE edges SET begin = $1, "end" = $2 , name = $3 , description = $4, 
+                 width = $5, color = $6, shape = $7 WHERE id = $8`
+
+	err := db.Connection.QueryRow(query, newEdge.Begin, newEdge.End, newEdge.Name, newEdge.Description,
+		newEdge.Width, models.ColorToInt(newEdge.Color), models.EdgeShapeToInt(newEdge.Shape)).Err()
+	return err
 }
 
 func (db *PostgresDB) UpdateNode(newNode models.Node) error {
-	return error(nil)
+	query := `UPDATE nodes SET edges = $1, name = $2 , data = $3 , 
+                 size = $4, color = $5, shape = $6 WHERE id = $7`
+
+	err := db.Connection.QueryRow(query, pq.Array(newNode.Edges), newNode.Name, newNode.Data,
+		newNode.Size, models.ColorToInt(newNode.Color), models.NodeShapeToInt(newNode.Shape)).Err()
+	return err
 }

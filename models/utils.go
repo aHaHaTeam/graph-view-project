@@ -2,7 +2,7 @@ package models
 
 import "image/color"
 
-func ColorFromInt(value int) color.Color {
+func ColorFromInt(value int) color.RGBA {
 	b := value % 1000
 	value /= 1000
 	g := value % 1000

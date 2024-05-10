@@ -3,10 +3,16 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"graph-view-project/database"
-	//. "github.com/BuriedInTheGround/pigowa"
+	_ "github.com/aHaHaTeam/p5js-wasm-go/color"
+	. "github.com/aHaHaTeam/p5js-wasm-go/environment"
+	_ "github.com/aHaHaTeam/p5js-wasm-go/events"
+	. "github.com/aHaHaTeam/p5js-wasm-go/p5js"
+	. "github.com/aHaHaTeam/p5js-wasm-go/rendering"
+	_ "github.com/aHaHaTeam/p5js-wasm-go/shape"
 	_ "github.com/joho/godotenv/autoload"
 	_ "github.com/lib/pq"
+	"graph-view-project/database"
+	"syscall/js"
 )
 
 type Product struct {
@@ -25,13 +31,13 @@ func main() {
 		return
 	}
 	_ = db
-	/*
-		Setup(func() interface{} {
-			//canvasSize := js.Global().Get("document").Call("getElementById", "canvas").Call("getBoundingClientRect")
-			//CreateCanvas(canvasSize.Get("width").Int(), canvasSize.Get("height").Int())
-			CreateCanvas(WindowWidth(), WindowHeight())
-			return nil
-		})*/
+
+	Setup(func(...js.Value) any {
+		//canvasSize := js.Global().Get("document").Call("getElementById", "canvas").Call("getBoundingClientRect")
+		//CreateCanvas(canvasSize.Get("width").Int(), canvasSize.Get("height").Int())
+		CreateCanvas(WindowWidth(), WindowHeight())
+		return nil
+	})
 
 	doDraw := true
 	_ = doDraw
@@ -58,16 +64,6 @@ func CreateTable(db *sql.DB) {
 	if err != nil {
 		panic(err)
 	}
-}
-
-func InsertProduct(db *sql.DB, product Product) int {
-	query := `INSERT INTO product (name, price, avaliable) VALUES ($1, $2, $3) RETURNING id`
-	var pk int
-	err := db.QueryRow(query, product.Name, product.Price, product.Avaliable).Scan(&pk)
-	if err != nil {
-		panic(err)
-	}
-	return pk
 }
 
 //package main

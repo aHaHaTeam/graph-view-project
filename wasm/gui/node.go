@@ -15,10 +15,6 @@ func NewNode(size float32, color color.RGBA, shape models.NodeShape) *Node {
 	return &Node{size: size, color: color, shape: shape}
 }
 
-func (node *Node) Draw() {
-	panic("not implemented exception")
-}
-
 func (node *Node) Size() float32 {
 	return node.size
 }

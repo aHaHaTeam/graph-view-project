@@ -50,6 +50,8 @@ func (edge *Edge) SetEnd(node *Node) {
 	edge.end = node
 }
 
-func (*Edge) Draw() {
-	panic("not implemented exception")
+func (this *Edge) Draw(canvas gui.Canvas) {
+	x1, y1 := this.begin.Position()
+	x2, y2 := this.end.Position()
+	canvas.DrawEdge(this.edge, x1, y1, x2, y2)
 }

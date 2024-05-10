@@ -130,3 +130,12 @@ func (graph *Graph) GetModel() *models.Graph {
 		gui.DefaultEdge.Shape(),
 	)
 }
+
+func (graph *Graph) Draw(canvas gui.Canvas) {
+	for _, node := range graph.nodes {
+		node.Draw(canvas)
+	}
+	for _, edge := range graph.edges {
+		edge.Draw(canvas)
+	}
+}

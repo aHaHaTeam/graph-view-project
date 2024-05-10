@@ -68,8 +68,13 @@ func (node *Node) model() *models.Node {
 	}
 }
 
-func (*Node) Draw() {
-	panic("not implemented exception")
+func (node *Node) Position() (float32, float32) {
+	return node.point.Position()
+}
+
+func (this *Node) Draw(canvas gui.Canvas) {
+	x, y := this.point.Position()
+	canvas.DrawNode(this.node, x, y)
 }
 
 func (node *Node) Update(c chan struct{}, nodes *[]*physics.Node, graph *physics.Graph) {

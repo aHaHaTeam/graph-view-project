@@ -8,6 +8,10 @@ type Node struct {
 	adjacentNodes []*Node
 }
 
+func (node *Node) Position() (float32, float32) {
+	return float32(node.position.x), float32(node.position.y)
+}
+
 func NewNode() *Node {
 	return &Node{
 		isPinned:      false,

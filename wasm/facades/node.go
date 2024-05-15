@@ -9,7 +9,7 @@ import (
 )
 
 type Node struct {
-	id      int
+	id      models.NodeId
 	edges   []*Edge
 	content *content.Node
 	point   *physics.Node
@@ -83,10 +83,6 @@ func (node *Node) Update(c chan struct{}, nodes *[]*physics.Node, graph *physics
 
 func (node *Node) Move(time float64) {
 	node.point.Move(time)
-}
-
-func (node *Node) SetNodeId(id int) {
-	node.id = id
 }
 
 func (node *Node) SetNodeName(name string) {

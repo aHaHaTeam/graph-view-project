@@ -31,9 +31,11 @@ func NodeShapeToInt(value NodeShape) int {
 	}
 }
 
+type NodeId int
+
 type Node struct {
-	Id    int   `json:"id"`
-	Edges []int `json:"edges"`
+	Id            NodeId   `json:"id"`
+	AdjacentNodes []NodeId `json:"edges"`
 
 	Name string `json:"name"`
 	Data []byte `json:"data"`
@@ -44,8 +46,8 @@ type Node struct {
 }
 
 func NewNode(
-	id int,
-	edges []int,
+	id NodeId,
+	adjacentNodes []NodeId,
 	name string,
 	data []byte,
 	size float32,
@@ -53,13 +55,13 @@ func NewNode(
 	shape NodeShape,
 ) *Node {
 	return &Node{
-		Id:    id,
-		Edges: edges,
-		Name:  name,
-		Data:  data,
-		Size:  size,
-		Color: color,
-		Shape: shape,
+		Id:            id,
+		AdjacentNodes: adjacentNodes,
+		Name:          name,
+		Data:          data,
+		Size:          size,
+		Color:         color,
+		Shape:         shape,
 	}
 }
 

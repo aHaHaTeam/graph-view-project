@@ -59,11 +59,11 @@ func TestCreateGraph(t *testing.T) {
 
 	graph, err := testedDB.CreateGraph(*user, *graph)
 	assert.Nil(t, err)
-	assert.Equal(t, 1, graph.Id) // we don't drop tables everytime, so id may be different
+	assert.Equal(t, 1, int(graph.Id)) // we don't drop tables everytime, so id may be different
 
 	graph, err = testedDB.CreateGraph(*user, *graph)
 	assert.Nil(t, err)
-	assert.Equal(t, 2, graph.Id)
+	assert.Equal(t, 2, int(graph.Id))
 }
 
 func TestCreateNode(t *testing.T) {
@@ -78,11 +78,11 @@ func TestCreateNode(t *testing.T) {
 
 	node, err := testedDB.CreateNode(*graph, *node)
 	assert.Nil(t, err)
-	assert.Equal(t, 1, node.Id)
+	assert.Equal(t, 1, int(node.Id))
 
 	node, err = testedDB.CreateNode(*graph, *node)
 	assert.Nil(t, err)
-	assert.Equal(t, 2, node.Id)
+	assert.Equal(t, 2, int(node.Id))
 }
 
 func TestCreateEdge(t *testing.T) {
@@ -97,11 +97,11 @@ func TestCreateEdge(t *testing.T) {
 
 	edge, err := testedDB.CreateEdge(*graph, *edge)
 	assert.Nil(t, err)
-	assert.Equal(t, 1, edge.Id)
+	assert.Equal(t, 1, int(edge.Id))
 
 	edge, err = testedDB.CreateEdge(*graph, *edge)
 	assert.Nil(t, err)
-	assert.Equal(t, 2, edge.Id)
+	assert.Equal(t, 2, int(edge.Id))
 }
 
 func TestUpdateUser(t *testing.T) {

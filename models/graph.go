@@ -2,8 +2,10 @@ package models
 
 import "image/color"
 
+type GraphId int
+
 type Graph struct {
-	Id          int     `json:"id"`
+	Id          GraphId `json:"id"`
 	Name        string  `json:"name"`
 	Description string  `json:"description"`
 	Nodes       []*Node `json:"nodes"`
@@ -20,7 +22,8 @@ type Graph struct {
 	DefaultEdgeShape EdgeShape  `json:"defaultEdgeShape"`
 }
 
-func NewGraph(id int,
+func NewGraph(
+	id GraphId,
 	name string,
 	description string,
 	nodes []*Node,

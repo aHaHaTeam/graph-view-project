@@ -7,7 +7,7 @@ import (
 )
 
 type Graph struct {
-	id      int
+	id      models.GraphId
 	content content.Graph
 	nodes   []*Node
 	edges   []*Edge
@@ -38,7 +38,7 @@ func LoadGraph(model models.Graph) *Graph {
 	}
 
 	for _, node := range model.Nodes {
-		nodes[node.Id] = newNode(node)
+		nodes[int(node.Id)] = newNode(node)
 	}
 
 	for _, edge := range model.Edges {
@@ -46,7 +46,7 @@ func LoadGraph(model models.Graph) *Graph {
 		end := nodes[edge.End]
 		facade := newEdge(edge, begin, end)
 
-		edges[edge.Id] = facade
+		edges[int(edge.Id)] = facade
 
 		begin.edges = append(begin.edges, facade)
 		begin.point.AddAdjacentNode(end.point)

@@ -3,6 +3,6 @@ package models
 import "github.com/golang-jwt/jwt"
 
 type Claims struct {
-	UserId int
+	UserId UserId
 	jwt.StandardClaims
 }

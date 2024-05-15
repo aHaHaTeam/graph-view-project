@@ -31,10 +31,12 @@ func EdgeShapeToInt(value EdgeShape) int {
 	}
 }
 
+type EdgeId int
+
 type Edge struct {
-	Id    int `json:"id"`
-	Begin int `json:"begin"`
-	End   int `json:"end"`
+	Id    EdgeId `json:"id"`
+	Begin int    `json:"begin"`
+	End   int    `json:"end"`
 
 	Name        string `json:"name"`
 	Description string `json:"description"`
@@ -45,7 +47,7 @@ type Edge struct {
 }
 
 func NewEdge(
-	id int,
+	id EdgeId,
 	begin int,
 	end int,
 	name string,

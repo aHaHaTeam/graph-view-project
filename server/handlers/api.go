@@ -129,7 +129,7 @@ func GetUser(db *database.DataBase) http.HandlerFunc {
 			return
 		}
 
-		user, err := (*db).GetUser(id)
+		user, err := (*db).GetUser(models.UserId(id))
 		if err != nil {
 			log.Printf("User with id: \"%s\" requested but not found.\n", vars["id"])
 			respondWithError(w, http.StatusInternalServerError, err.Error())
@@ -148,7 +148,7 @@ func GetGraph(db *database.DataBase) http.HandlerFunc {
 			return
 		}
 
-		graph, err := (*db).GetGraph(id)
+		graph, err := (*db).GetGraph(models.GraphId(id))
 		if err != nil {
 			log.Printf("Graph with id: \"%s\" requested but not found.\n", vars["id"])
 			respondWithError(w, http.StatusInternalServerError, err.Error())
@@ -167,7 +167,7 @@ func GetEdge(db *database.DataBase) http.HandlerFunc {
 			return
 		}
 
-		edge, err := (*db).GetEdge(id)
+		edge, err := (*db).GetEdge(models.EdgeId(id))
 		if err != nil {
 			log.Printf("Edge with id: \"%s\" requested but not found.\n", vars["id"])
 			respondWithError(w, http.StatusInternalServerError, err.Error())
@@ -186,7 +186,7 @@ func GetNode(db *database.DataBase) http.HandlerFunc {
 			return
 		}
 
-		node, err := (*db).GetNode(id)
+		node, err := (*db).GetNode(models.NodeId(id))
 		if err != nil {
 			log.Printf("Node with id: \"%s\" requested but not found.\n", vars["id"])
 			respondWithError(w, http.StatusInternalServerError, err.Error())

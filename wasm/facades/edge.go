@@ -7,7 +7,7 @@ import (
 )
 
 type Edge struct {
-	id      int
+	id      models.EdgeId
 	begin   *Node
 	end     *Node
 	content *content.Edge

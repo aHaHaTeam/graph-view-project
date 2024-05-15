@@ -49,39 +49,39 @@ func (db *MockDB) CreateUser(user models.User) (*models.User, error) {
 		return nil, errors.New("user already exists")
 	}
 
-	user.Id = len(db.users) + 1
-	db.users[user.Id] = &user
+	user.Id = models.UserId(len(db.users) + 1)
+	db.users[int(user.Id)] = &user
 	err := db.UpdateUser(user)
 	newUser := user
 	return &newUser, err
 }
 
 func (db *MockDB) CreateGraph(user models.User, graph models.Graph) (*models.Graph, error) {
-	graph.Id = len(db.graphs) + 1
-	db.graphs[graph.Id] = &graph
+	graph.Id = models.GraphId(len(db.graphs) + 1)
+	db.graphs[int(graph.Id)] = &graph
 	err := db.UpdateUser(user)
 	newGraph := graph
 	return &newGraph, err
 }
 
 func (db *MockDB) CreateNode(graph models.Graph, node models.Node) (*models.Node, error) {
-	node.Id = len(db.nodes) + 1
-	db.nodes[node.Id] = &node
+	node.Id = models.NodeId(len(db.nodes) + 1)
+	db.nodes[int(node.Id)] = &node
 	err := db.UpdateGraph(graph)
 	newNode := node
 	return &newNode, err
 }
 
 func (db *MockDB) CreateEdge(graph models.Graph, edge models.Edge) (*models.Edge, error) {
-	edge.Id = len(db.edges) + 1
-	db.edges[edge.Id] = &edge
+	edge.Id = models.EdgeId(len(db.edges) + 1)
+	db.edges[int(edge.Id)] = &edge
 	err := db.UpdateGraph(graph)
 	newEdge := edge
 	return &newEdge, err
 }
 
-func (db *MockDB) GetUser(id int) (*models.User, error) {
-	user, ok := db.users[id]
+func (db *MockDB) GetUser(id models.UserId) (*models.User, error) {
+	user, ok := db.users[int(id)]
 	if !ok {
 		return nil, errors.New("user does not exist")
 	}
@@ -99,24 +99,24 @@ func (db *MockDB) GetUserByLogin(login string) (*models.User, error) {
 	return nil, errors.New("user does not exist")
 }
 
-func (db *MockDB) GetGraph(id int) (*models.Graph, error) {
-	graph, ok := db.graphs[id]
+func (db *MockDB) GetGraph(id models.GraphId) (*models.Graph, error) {
+	graph, ok := db.graphs[int(id)]
 	if !ok {
 		return nil, errors.New("graph does not exist")
 	}
 
 	return graph, nil
 }
-func (db *MockDB) GetEdge(id int) (*models.Edge, error) {
-	edge, ok := db.edges[id]
+func (db *MockDB) GetEdge(id models.EdgeId) (*models.Edge, error) {
+	edge, ok := db.edges[int(id)]
 	if !ok {
 		return nil, errors.New("edge does not exist")
 	}
 
 	return edge, nil
 }
-func (db *MockDB) GetNode(id int) (*models.Node, error) {
-	node, ok := db.nodes[id]
+func (db *MockDB) GetNode(id models.NodeId) (*models.Node, error) {
+	node, ok := db.nodes[int(id)]
 	if !ok {
 		return nil, errors.New("node does not exist")
 	}

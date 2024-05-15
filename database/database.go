@@ -12,11 +12,11 @@ type DataBase interface {
 	CreateNode(graph models.Graph, node models.Node) (*models.Node, error)
 	CreateEdge(graph models.Graph, edge models.Edge) (*models.Edge, error)
 
-	GetUser(id int) (*models.User, error)
+	GetUser(id models.UserId) (*models.User, error)
 	GetUserByLogin(login string) (*models.User, error)
-	GetGraph(id int) (*models.Graph, error)
-	GetEdge(id int) (*models.Edge, error)
-	GetNode(id int) (*models.Node, error)
+	GetGraph(id models.GraphId) (*models.Graph, error)
+	GetEdge(id models.EdgeId) (*models.Edge, error)
+	GetNode(id models.NodeId) (*models.Node, error)
 
 	UpdateUser(newUser models.User) error
 	UpdateGraph(newGraph models.Graph) error

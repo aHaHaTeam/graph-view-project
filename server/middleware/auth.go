@@ -27,7 +27,7 @@ func AuthUser(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		r.Header.Add("success", "home page")
-		r.Header.Add("email", strconv.Itoa(claims.UserId))
+		r.Header.Add("email", strconv.Itoa(int(claims.UserId)))
 
 		next(w, r)
 	}

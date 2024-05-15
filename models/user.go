@@ -1,7 +1,9 @@
 package models
 
+type UserId int
+
 type User struct {
-	Id       int      `json:"id"`
+	Id       UserId   `json:"id"`
 	Login    string   `json:"login"`
 	Email    string   `json:"email"`
 	Password string   `json:"password"`
@@ -9,7 +11,7 @@ type User struct {
 }
 
 func NewUser(
-	id int,
+	id UserId,
 	login string,
 	email string,
 	password string,
